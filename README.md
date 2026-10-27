@@ -36,4 +36,4 @@
 ## 📫 Contact
 * **Email:** yeonsu826@gmail.com
 * **LinkedIn:** www.linkedin.com/in/yeonsu0826
-* **Portfolio Link:** https://yeonsu826.github.io/3d_object_portfolio/
+* **Portfolio Link:** https://yeonsu826.github.io/portfolio/
