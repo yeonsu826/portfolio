@@ -6,7 +6,6 @@ const CHANNELS = [
   { label: "GitHub", value: "github.com/yeonsu826", href: "https://github.com/yeonsu826" },
   { label: "Instagram", value: "@yeon_ddooo", href: "https://www.instagram.com/yeon_ddooo/" },
   { label: "Blog", value: "blog.naver.com/infoinno1010", href: "https://blog.naver.com/infoinno1010" },
-  { label: "Resume", valueKey: "contactResume" as const, href: "https://drive.google.com/file/d/1KoXktyWpnaoLIk6qlEdx_TCZcPS-f6gt/view?usp=sharing" },
 ];
 
 export default function Contact() {
@@ -30,7 +29,7 @@ export default function Contact() {
                 {channel.label}
               </span>
               <span className="font-['Figtree'] text-sm sm:text-base text-white/90 truncate">
-                {"value" in channel && channel.value ? channel.value : t.contactResume}
+                {channel.value}
               </span>
             </a>
           </li>
