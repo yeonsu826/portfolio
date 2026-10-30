@@ -182,7 +182,9 @@ export default function Works({ mainTab, onCategoryChange }: {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${groupName} ${
-                          linkItem.linkLabel === "github"
+                          linkItem.linkLabel === "appstore"
+                            ? (lang === 'en' ? 'View on App Store' : 'App Store에서 보기')
+                            : linkItem.linkLabel === "github"
                             ? t.viewGithub
                             : linkItem.linkLabel === "site"
                               ? t.viewSite
@@ -228,7 +230,9 @@ export default function Works({ mainTab, onCategoryChange }: {
                           rel="noopener noreferrer"
                           className="shrink-0 flex items-center gap-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] text-primary hover:text-black hover:bg-primary transition-colors bg-primary/10 px-3 py-2 rounded-full border border-primary/20"
                         >
-                          {linkItem.linkLabel === "github"
+                          {linkItem.linkLabel === "appstore"
+                            ? (lang === 'en' ? 'View on App Store' : 'App Store에서 보기')
+                            : linkItem.linkLabel === "github"
                             ? t.viewGithub
                             : linkItem.linkLabel === "site"
                               ? t.viewSite

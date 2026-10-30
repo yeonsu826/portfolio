@@ -16,7 +16,7 @@ export interface PortfolioItem {
   videos?: { src: string; label: string }[];
   isProcess?: boolean;
   link?: string;
-  linkLabel?: "github" | "site" | "play" | "video";
+  linkLabel?: "github" | "site" | "play" | "video" | "appstore";
 }
 
 export interface PortfolioGroup {
@@ -128,6 +128,8 @@ export const PORTFOLIO: PortfolioGroup[] = [
     items: [
       {
         id: "dev_praynote",
+        link: "https://apps.apple.com/kr/app/id6822101326",
+        linkLabel: "appstore",
         videos: [
           { src: asset("videos/gracesea/guide-01.mp4"), label: "오늘의 기록과 묵상" },
           { src: asset("videos/gracesea/guide-02.mp4"), label: "등대에서 함께 기도하기" },
@@ -135,16 +137,6 @@ export const PORTFOLIO: PortfolioGroup[] = [
         ],
         thumb: asset("images/dev/gracesea/app-preview-01.png"),
         thumbFit: "contain",
-        galleryImages: [
-          asset("images/dev/gracesea/app-preview-01.png"),
-          asset("images/dev/gracesea/app-preview-02.png"),
-          asset("videos/gracesea/guide-00.png"),
-          asset("images/dev/gracesea/gracesea_1.png"),
-          asset("images/dev/gracesea/icon_3.png"),
-          asset("images/dev/gracesea/icon_4.png"),
-          asset("images/dev/gracesea/icon_blue.png"),
-          asset("images/dev/gracesea/icon_white.png"),
-        ],
       },
     ],
   },
