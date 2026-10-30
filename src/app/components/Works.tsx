@@ -17,11 +17,18 @@ export default function Works({ mainTab, onCategoryChange }: {
   const [activeGroup, setActiveGroup] = useState<"all" | (typeof PORTFOLIO)[number]["groupKey"]>("all");
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
   const { t, lang } = useLang();
+  const developmentGroups = PORTFOLIO.filter((group) =>
+    group.tools?.includes("Develop") && (
+      !group.soloDevelopment ||
+      group.groupKey === "devPraynoteGroup" ||
+      group.groupKey === "devPetChewGroup"
+    )
+  );
 
   const filteredByMainTab = PORTFOLIO.filter((group) => {
     if (mainTab === "all") return true;
     if (mainTab === "Solo") return group.soloDevelopment;
-    if (mainTab === "Develop") return group.tools?.includes("Develop") && !group.soloDevelopment;
+    if (mainTab === "Develop") return developmentGroups.includes(group);
     return group.tools?.includes(mainTab);
   });
 
@@ -42,7 +49,7 @@ export default function Works({ mainTab, onCategoryChange }: {
       id: "Develop" as const,
       label: t.categoryDevelop,
       icon: Code2,
-      count: PORTFOLIO.filter((group) => group.tools?.includes("Develop") && !group.soloDevelopment).length,
+      count: developmentGroups.length,
     },
     {
       id: "Design" as const,

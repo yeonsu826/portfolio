@@ -38,6 +38,43 @@ export const TOOL_LOGOS: Record<string, string> = {
 
 export const PORTFOLIO: PortfolioGroup[] = [
   {
+    groupKey: "devPraynoteGroup",
+    soloDevelopment: true,
+    readme: graceseaReadme,
+    tools: ["Develop", "React Native", "Expo", "Supabase"],
+    emoji: "🌊",
+    items: [
+      {
+        id: "dev_praynote",
+        link: "https://apps.apple.com/kr/app/id6822101326",
+        linkLabel: "appstore",
+        videos: [
+          { src: asset("videos/gracesea/guide-01.mp4"), label: "오늘의 기록과 묵상" },
+          { src: asset("videos/gracesea/guide-02.mp4"), label: "등대에서 함께 기도하기" },
+          { src: asset("videos/gracesea/guide-03.mp4"), label: "커뮤니티 중보기도" },
+        ],
+        thumb: asset("images/dev/gracesea/app-preview-01.png"),
+        thumbFit: "contain",
+      },
+    ],
+  },
+  {
+    groupKey: "devPetChewGroup",
+    soloDevelopment: true,
+    readme: petChewReadme,
+    concept: "WIP",
+    tools: ["Develop", "Unity", "AR Foundation", "C#"],
+    emoji: "🐈‍⬛",
+    items: [
+      {
+        id: "dev_pet_chew",
+        thumb: asset("images/dev/PetChew/chap-chew.png"),
+        thumbFit: "contain",
+        galleryImages: [asset("images/dev/PetChew/chap-chew.png")],
+      },
+    ],
+  },
+  {
     groupKey: "jinu",
     tools: ["Design", "Blender", "Substance Painter"],
     emoji: "🎸",
@@ -120,27 +157,6 @@ export const PORTFOLIO: PortfolioGroup[] = [
     ],
   },
   {
-    groupKey: "devPraynoteGroup",
-    soloDevelopment: true,
-    readme: graceseaReadme,
-    tools: ["Develop", "React Native", "Expo", "Supabase"],
-    emoji: "🌊",
-    items: [
-      {
-        id: "dev_praynote",
-        link: "https://apps.apple.com/kr/app/id6822101326",
-        linkLabel: "appstore",
-        videos: [
-          { src: asset("videos/gracesea/guide-01.mp4"), label: "오늘의 기록과 묵상" },
-          { src: asset("videos/gracesea/guide-02.mp4"), label: "등대에서 함께 기도하기" },
-          { src: asset("videos/gracesea/guide-03.mp4"), label: "커뮤니티 중보기도" },
-        ],
-        thumb: asset("images/dev/gracesea/app-preview-01.png"),
-        thumbFit: "contain",
-      },
-    ],
-  },
-  {
     groupKey: "devManittoGroup",
     soloDevelopment: true,
     readme: manittoReadme,
@@ -172,22 +188,6 @@ export const PORTFOLIO: PortfolioGroup[] = [
         thumbFit: "contain",
         link: asset("unity-webgl-game/index.html"),
         linkLabel: "play",
-      },
-    ],
-  },
-  {
-    groupKey: "devPetChewGroup",
-    soloDevelopment: true,
-    readme: petChewReadme,
-    concept: "WIP",
-    tools: ["Develop", "Unity", "AR Foundation", "C#"],
-    emoji: "🐈‍⬛",
-    items: [
-      {
-        id: "dev_pet_chew",
-        thumb: asset("images/dev/PetChew/chap-chew.png"),
-        thumbFit: "contain",
-        galleryImages: [asset("images/dev/PetChew/chap-chew.png")],
       },
     ],
   },
