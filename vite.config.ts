@@ -50,6 +50,9 @@ function serveGlbFilesPlugin() {
 
 export default defineConfig({
   base: '/portfolio/',
+  define: {
+    'import.meta.env.VITE_VERCEL_ANALYTICS_ENABLED': JSON.stringify(process.env.VERCEL === '1'),
+  },
   plugins: [
     // figmaAssetResolver(), // 필요시 유지
     react(),

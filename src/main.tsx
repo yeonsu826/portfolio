@@ -8,10 +8,12 @@ import CardStart from './app/components/CardStart';
 import DevArchive from './Dev/DevArchive'; 
 import ScrollToTop from './app/components/ScrollToTop'
 import GraceSeaCaseStudy from './app/components/GraceSeaCaseStudy';
+import WebAnalytics from './app/components/WebAnalytics';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <HashRouter>
+      <WebAnalytics />
       <ScrollToTop />
       <Routes>
         <Route path="/gracesea" element={<GraceSeaCaseStudy />} />
