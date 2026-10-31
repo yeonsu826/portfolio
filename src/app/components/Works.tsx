@@ -263,10 +263,10 @@ export default function Works({ mainTab, onCategoryChange }: {
                       )}
                       <ToolTags tools={group.tools} />
                     </div>
-                    {group.groupKey === 'devPraynoteGroup' && (
-                      <Link to="/gracesea" className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary hover:bg-primary/20">{lang === 'en' ? 'Explore project' : '프로젝트 소개 보기'}<ArrowUpRight size={18} /></Link>
+                    {(group.groupKey === 'devPraynoteGroup' || group.groupKey === 'devPetChewGroup') && (
+                      <Link to={group.groupKey === 'devPetChewGroup' ? '/chapchew' : '/gracesea'} className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary hover:bg-primary/20">{lang === 'en' ? 'Explore project' : '프로젝트 소개 보기'}<ArrowUpRight size={18} /></Link>
                     )}
-                    {group.readme && group.groupKey !== 'devPraynoteGroup' && (
+                    {group.readme && group.groupKey !== 'devPraynoteGroup' && group.groupKey !== 'devPetChewGroup' && (
                       <ProjectDetails title={groupName} readme={group.readme} images={allImages} videos={videos} />
                     )}
                     {videos.length > 0 && !group.readme && (

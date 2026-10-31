@@ -68,9 +68,9 @@ export const PORTFOLIO: PortfolioGroup[] = [
     items: [
       {
         id: "dev_pet_chew",
-        thumb: asset("images/dev/PetChew/chap-chew.png"),
+        thumb: asset("images/dev/chapchew/poster.jpg"),
         thumbFit: "contain",
-        galleryImages: [asset("images/dev/PetChew/chap-chew.png")],
+        galleryImages: Array.from({ length: 7 }, (_, index) => asset(`images/dev/chapchew/screen-0${index + 1}.jpg`)),
       },
     ],
   },

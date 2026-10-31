@@ -80,7 +80,7 @@ export const TRANSLATIONS = {
       devPraynoteGroup: "매일의 말씀과 기도를 기록하고 묵상 시간을 쌓아가는 신앙 생활 앱입니다. 말씀 검색, 묵상 캘린더, 공동체 ‘등대’의 기도제목 나눔과 중보기도 기능을 담았습니다.",
       devManittoGroup: "쉽고 즐겁게 마니또를 만들고 공유할 수 있는 웹 서비스입니다.",
       devUnityWebglGroup: "브라우저에서 바로 플레이할 수 있도록 빌드한 Unity WebGL 게임입니다.",
-      devPetChewGroup: "식습관 개선 얼굴인식 게임입니다.",
+      devPetChewGroup: "씹는 움직임으로 왁뿌볼을 쪼개는 얼굴인식 게임입니다.",
     },
   },
   en: {
@@ -164,7 +164,7 @@ export const TRANSLATIONS = {
       devPraynoteGroup: "A faith journal app for recording daily scripture and prayers and tracking devotional time. Features include scripture search, a devotional calendar, and Lighthouse groups for sharing prayer requests and praying for one another.",
       devManittoGroup: "A web service for creating and sharing Secret Santa groups quickly and playfully.",
       devUnityWebglGroup: "A Unity WebGL game built to be played directly in the browser.",
-      devPetChewGroup: "A face-recognition game designed to help improve eating habits.",
+      devPetChewGroup: "A face-tracking game where chewing movements crack a wax ball.",
     },
   },
 } as const;

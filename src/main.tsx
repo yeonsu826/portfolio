@@ -8,6 +8,7 @@ import CardStart from './app/components/CardStart';
 import DevArchive from './Dev/DevArchive'; 
 import ScrollToTop from './app/components/ScrollToTop'
 import GraceSeaCaseStudy from './app/components/GraceSeaCaseStudy';
+import ChapChewCaseStudy from './app/components/ChapChewCaseStudy';
 import WebAnalytics from './app/components/WebAnalytics';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <ScrollToTop />
       <Routes>
         <Route path="/gracesea" element={<GraceSeaCaseStudy />} />
+        <Route path="/chapchew" element={<ChapChewCaseStudy />} />
         <Route path="/" element={<CardStart />} />
         <Route path="/main" element={<App />} />
         <Route path="/dev-archive" element={<DevArchive />} />
