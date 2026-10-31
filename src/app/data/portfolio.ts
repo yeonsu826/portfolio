@@ -53,7 +53,7 @@ export const PORTFOLIO: PortfolioGroup[] = [
           { src: asset("videos/gracesea/guide-02.mp4"), label: "등대에서 함께 기도하기" },
           { src: asset("videos/gracesea/guide-03.mp4"), label: "커뮤니티 중보기도" },
         ],
-        thumb: asset("images/dev/gracesea/app-preview-01.png"),
+        thumb: asset("images/dev/gracesea/project-thumbnail.jpg"),
         thumbFit: "contain",
       },
     ],
