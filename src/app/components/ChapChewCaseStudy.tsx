@@ -31,13 +31,14 @@ export default function ChapChewCaseStudy() {
   useEffect(() => {
     const previous = document.title;
     document.title = 'ChapChew — 프로젝트 소개 | 연수';
+    document.getElementById('cc-top')?.scrollIntoView({ behavior: 'instant' });
     return () => { document.title = previous; };
   }, []);
 
   return <main className="cc-page">
-    <nav className="cc-nav" aria-label="프로젝트 메뉴">
+    <nav id="cc-top" className="cc-nav" aria-label="프로젝트 메뉴">
       <Link to="/main?category=Solo"><ArrowLeft size={16} /> PORTFOLIO</Link>
-      <a className="cc-wordmark" href="#/chapchew" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>ChapChew</a>
+      <a className="cc-wordmark" href="#/chapchew" onClick={event => { event.preventDefault(); scrollTo('cc-top'); }}>ChapChew</a>
       <button type="button" onClick={() => scrollTo('cc-play')}>플레이 살펴보기 <ArrowUpRight size={17} /></button>
     </nav>
 
@@ -77,7 +78,7 @@ export default function ChapChewCaseStudy() {
     <section className="cc-build cc-section"><div><span className="cc-kicker">06 / BEHIND THE PLAY</span><h2>보이는 반응 뒤의<br /><span>작은 연결들.</span></h2></div><div className="cc-build-items"><article><span>01 / TRACK</span><h3>움직임을 인식하고</h3><p>AR Foundation으로 얼굴 움직임을 추적하고, 개인별 측정값을 기준으로 한입과 씹기 동작을 구분합니다.</p></article><article><span>02 / REACT</span><h3>왁뿌볼에 전달하고</h3><p>씹기 이벤트마다 표면의 눌림과 균열을 표현합니다. 새 한입에는 공을 초기화해 다음 놀이를 준비합니다.</p></article><article><span>03 / RECORD</span><h3>기록으로 이어집니다</h3><p>한입별 카운트를 저장하고, 목표선과 비교한 그래프와 식사 흐름 요약으로 연결합니다.</p></article></div><div className="cc-stack"><span>Unity</span><span>AR Foundation</span><span>C#</span><span>3D Interaction</span></div></section>
 
     <section className="cc-ending"><span className="cc-kicker">A LITTLE CHEW. A LITTLE CRACK.</span><h2>오물오물.<br />한 번 더, ChapChew<i aria-hidden="true">✳</i></h2><Link to="/main?category=Solo">다른 프로젝트 보기 <ArrowRight size={20} /></Link></section>
-    <footer className="cc-footer"><span>CHAPCHEW / PROJECT STORY</span><span>DESIGN & DEVELOPMENT BY 연수</span><button onClick={() => window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })}>BACK TO TOP ↑</button></footer>
+    <footer className="cc-footer"><span>CHAPCHEW / PROJECT STORY</span><span>DESIGN & DEVELOPMENT BY 연수</span><button onClick={() => scrollTo('cc-top')}>BACK TO TOP ↑</button></footer>
     {gallery !== null && <Lightbox images={screens} index={gallery} onChange={setGallery} onClose={() => setGallery(null)} caption={`ChapChew 앱 화면 ${gallery + 1} / 7`} />}
   </main>;
 }
