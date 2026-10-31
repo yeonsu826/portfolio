@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Expand, ScanFace } from 'lucide-react';
-import Lightbox from './Lightbox';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, ScanFace } from 'lucide-react';
 import './ChapChewCaseStudy.css';
 
 const asset = (name: string) => `${import.meta.env.BASE_URL}images/dev/chapchew/${name}.jpg`;
@@ -17,14 +16,13 @@ const reactions = [
   { label: '쪼개지고', title: '한입마다,\n새로운 리듬으로.', text: '눌림과 갈라짐이 쌓이며 공의 표면이 달라집니다. 새로운 한입을 인식하면 처음 상태로 돌아와, 다시 쪼개는 놀이를 이어갑니다.', caption: '눌림과 갈라짐이 쌓인 플레이 화면', screen: 5 },
 ];
 
-function Screen({ index, onOpen, eager = false }: { index: number; onOpen: (index: number) => void; eager?: boolean }) {
+function Screen({ index, eager = false }: { index: number; eager?: boolean }) {
   const label = [...setup.map(item => item.title), ...reactions.map(item => item.caption), '오늘의 식사 리포트'][index];
-  return <button type="button" className="cc-screen" onClick={() => onOpen(index)} aria-label={`${label} 크게 보기`}><img src={screens[index]} alt={label} width="750" height="1624" loading={eager ? 'eager' : 'lazy'} /><span><Expand size={16} /> 크게 보기</span></button>;
+  return <div className="cc-screen"><img src={screens[index]} alt={label} width="750" height="1624" loading={eager ? 'eager' : 'lazy'} /></div>;
 }
 
 export default function ChapChewCaseStudy() {
   const [active, setActive] = useState(0);
-  const [gallery, setGallery] = useState<number | null>(null);
   const reaction = reactions[active];
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
 
@@ -62,16 +60,16 @@ export default function ChapChewCaseStudy() {
         event.preventDefault();
         const next = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (active + (event.key === 'ArrowRight' ? 1 : 2)) % 3;
         setActive(next); document.getElementById(`cc-reaction-${next}`)?.focus();
-      }}><span>0{index + 1}</span>{item.label}</button>)}</div><div className="cc-play-note"><ScanFace size={18} /><span>터치 대신, 내 움직임으로 플레이.</span></div></div><div className="cc-play-screen" id="cc-reaction-panel" role="tabpanel" aria-labelledby={`cc-reaction-${active}`}><div className="cc-orbit" aria-hidden="true" /><Screen index={reaction.screen} onOpen={setGallery} eager /><span className="cc-screen-caption">{reaction.caption}</span></div></div>
+      }}><span>0{index + 1}</span>{item.label}</button>)}</div><div className="cc-play-note"><ScanFace size={18} /><span>터치 대신, 내 움직임으로 플레이.</span></div></div><div className="cc-play-screen" id="cc-reaction-panel" role="tabpanel" aria-labelledby={`cc-reaction-${active}`}><div className="cc-orbit" aria-hidden="true" /><Screen index={reaction.screen} eager /><span className="cc-screen-caption">{reaction.caption}</span></div></div>
       <div className="cc-play-marquee" aria-hidden="true">CHEW. CRACK. REPEAT. <span>✳</span> CHEW. CRACK. REPEAT.</div>
     </section>
 
     <section className="cc-setup cc-section">
       <div className="cc-section-heading"><span className="cc-kicker">03 / READY TO PLAY</span><h2>시작은 가볍게.<br /><span>기준은 나에게 맞게.</span></h2><p>목표를 고르고, 내 움직임을 측정하면 준비 끝.<br />익숙한 주방에서 놀이가 시작됩니다.</p></div>
-      <div className="cc-setup-grid">{setup.map((item, index) => <figure key={item.title}><div className={`cc-setup-stage cc-setup-stage-${index}`}><span className="cc-stage-number" aria-hidden="true">0{index + 1}</span><Screen index={index} onOpen={setGallery} /></div><figcaption><span>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></figcaption></figure>)}</div>
+      <div className="cc-setup-grid">{setup.map((item, index) => <figure key={item.title}><div className={`cc-setup-stage cc-setup-stage-${index}`}><span className="cc-stage-number" aria-hidden="true">0{index + 1}</span><Screen index={index} /></div><figcaption><span>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></figcaption></figure>)}</div>
     </section>
 
-    <section className="cc-report"><div className="cc-report-art"><Screen index={6} onOpen={setGallery} /><span className="cc-report-stamp" aria-hidden="true">ONE BITE<br /><b>AT A TIME.</b><i>✳</i></span></div><div className="cc-report-copy"><span className="cc-kicker">04 / LOOKING BACK</span><h2>오늘의 오물오물,<br /><span>한눈에 돌아보기.</span></h2><p>놀이를 마치면 한입별 씹기 기록을 확인합니다. 총 횟수뿐 아니라 한입마다 얼마나 씹었는지, 처음과 끝의 흐름은 어땠는지 보여줍니다.</p><ul><li><span>01</span><div><h3>오늘의 기록</h3><p>먹은 한입 수, 총 씹은 횟수, 설정한 목표.</p></div></li><li><span>02</span><div><h3>한입씩, 그래프로</h3><p>목표선과 한입별 기록을 함께 비교합니다.</p></div></li><li><span>03</span><div><h3>흐름을 읽는 한 문장</h3><p>식사 초반과 후반의 차이를 짧은 문장으로.</p></div></li></ul></div></section>
+    <section className="cc-report"><div className="cc-report-art"><Screen index={6} /><span className="cc-report-stamp" aria-hidden="true">ONE BITE<br /><b>AT A TIME.</b><i>✳</i></span></div><div className="cc-report-copy"><span className="cc-kicker">04 / LOOKING BACK</span><h2>오늘의 오물오물,<br /><span>한눈에 돌아보기.</span></h2><p>놀이를 마치면 한입별 씹기 기록을 확인합니다. 총 횟수뿐 아니라 한입마다 얼마나 씹었는지, 처음과 끝의 흐름은 어땠는지 보여줍니다.</p><ul><li><span>01</span><div><h3>오늘의 기록</h3><p>먹은 한입 수, 총 씹은 횟수, 설정한 목표.</p></div></li><li><span>02</span><div><h3>한입씩, 그래프로</h3><p>목표선과 한입별 기록을 함께 비교합니다.</p></div></li><li><span>03</span><div><h3>흐름을 읽는 한 문장</h3><p>식사 초반과 후반의 차이를 짧은 문장으로.</p></div></li></ul></div></section>
 
     <section className="cc-design cc-section"><div className="cc-section-heading"><span className="cc-kicker">05 / VISUAL LANGUAGE</span><h2>따뜻한 공간,<br /><span>장난스러운 반응.</span></h2><p>햇살이 드는 주방, 옆을 지키는 작은 고양이,<br />그리고 자꾸 쪼개 보고 싶은 주황색 공.</p></div><div className="cc-design-board"><figure><img src={asset('poster')} alt="ChapChew 캐릭터와 왁뿌볼의 비주얼 콘셉트" width="1400" height="933" loading="lazy" /><figcaption>THE WORLD OF CHAPCHEW</figcaption></figure><div className="cc-palette"><div style={{ background: '#31533B', color: '#FFF9E9' }}><b>Garden green</b><span>#31533B</span></div><div style={{ background: '#E8EF76' }}><b>Playful lime</b><span>#E8EF76</span></div><div style={{ background: '#F37D52' }}><b>Wax orange</b><span>#F37D52</span></div><div style={{ background: '#FFF9E9' }}><b>Kitchen cream</b><span>#FFF9E9</span></div></div></div></section>
 
@@ -79,6 +77,5 @@ export default function ChapChewCaseStudy() {
 
     <section className="cc-ending"><span className="cc-kicker">A LITTLE CHEW. A LITTLE CRACK.</span><h2>오물오물.<br />한 번 더, ChapChew<i aria-hidden="true">✳</i></h2><Link to="/main?category=Solo">다른 프로젝트 보기 <ArrowRight size={20} /></Link></section>
     <footer className="cc-footer"><span>CHAPCHEW / PROJECT STORY</span><span>DESIGN & DEVELOPMENT BY 연수</span><button onClick={() => scrollTo('cc-top')}>BACK TO TOP ↑</button></footer>
-    {gallery !== null && <Lightbox images={screens} index={gallery} onChange={setGallery} onClose={() => setGallery(null)} caption={`ChapChew 앱 화면 ${gallery + 1} / 7`} />}
   </main>;
 }

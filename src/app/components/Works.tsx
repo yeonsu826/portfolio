@@ -172,8 +172,9 @@ export default function Works({ mainTab, onCategoryChange }: {
               const linkItem = group.items.find((item) => item.link);
               const allImages = mainGalleryItem?.galleryImages ?? [];
               const videos = group.items.flatMap((item) => item.videos ?? []);
-              const coverImage = mainGalleryItem?.thumb || linkItem?.thumb || "";
-              const coverFit = (mainGalleryItem || linkItem)?.thumbFit ?? "cover";
+              const coverItem = mainGalleryItem || linkItem || group.items[0];
+              const coverImage = coverItem?.thumb || "";
+              const coverFit = coverItem?.thumbFit ?? "cover";
 
               return (
                 <article key={group.groupKey} className="group overflow-hidden rounded-[1.5rem] bg-[#0d0d13] border border-white/10 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(0,0,0,0.35)]">

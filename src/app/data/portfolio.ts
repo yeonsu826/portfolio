@@ -70,7 +70,6 @@ export const PORTFOLIO: PortfolioGroup[] = [
         id: "dev_pet_chew",
         thumb: asset("images/dev/chapchew/poster.jpg"),
         thumbFit: "contain",
-        galleryImages: Array.from({ length: 7 }, (_, index) => asset(`images/dev/chapchew/screen-0${index + 1}.jpg`)),
       },
     ],
   },
