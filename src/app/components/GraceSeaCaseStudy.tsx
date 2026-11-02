@@ -8,7 +8,7 @@ const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 const ui = (path: string) => asset(`images/dev/gracesea/${path}`);
 const flows = [
   { title: '오늘의 기록과 묵상', subtitle: '마음에 남은 말씀을, 오늘의 삶으로.', description: '기록하고, 내려놓고, 묵상합니다. 오늘의 묵상이 바다를 채웁니다.', folder: '1_기록_묵상', video: 'guide-01.mp4', screens: [
-    ['01-calendar-before.png', '나의 바다에서 오늘 시작하기'], ['02-scripture-search_1.png', '성경 책·장·절 선택'], ['02-scripture-search_2.png', '검색한 말씀 확인'], ['03-prayer-and-scripture.png', '기도와 말씀 기록'], ['04-practice-and-meditation.png', '삶에 적용할 내용 작성'], ['05-saved.png', '기록 저장'], ['06-calendar-recorded.png', '기록한 날 확인'], ['07-meditation-ready.png', '묵상 시작 준비'], ['08-meditation-running.png', '휴대폰을 내려놓고 묵상'], ['09-meditation-complete.png', '묵상 완료'], ['10-calendar-complete.png', '오늘의 바다 채움 확인'],
+    ['01-calendar-before.png', '나의 바다에서 오늘 시작하기'], ['02-scripture-search_1.png', '성경 책·장·절 선택'], ['03-prayer-and-scripture.png', '기도와 말씀 기록'], ['04-practice-and-meditation.png', '삶에 적용할 내용 작성'], ['05-saved.png', '기록 저장'], ['06-calendar-recorded.png', '기록한 날 확인'], ['07-meditation-ready.png', '묵상 시작 준비'], ['08-meditation-running.png', '휴대폰을 내려놓고 묵상'], ['09-meditation-complete.png', '묵상 완료'], ['10-calendar-complete.png', '오늘의 바다 채움 확인'],
   ] },
   { title: '등대에서 함께 기도하기', subtitle: '서로의 기도가 되어주는 작은 공동체.', description: '등대에서 함께 기도합니다. 개인 기록은 비공개로 남습니다.', folder: '2_등대_묵상', video: 'guide-02.mp4', screens: Array.from({ length: 8 }, (_, i) => [`${i + 1}.png`, `등대 사용 흐름 ${i + 1}`]) },
   { title: '커뮤니티 중보기도', subtitle: '작은 기도가, 더 넓은 바다로.', description: '기도제목을 나누고 서로를 위해 기도합니다. 익명으로도 참여할 수 있습니다.', folder: '3_커뮤니티_묵상', video: 'guide-03.mp4', screens: Array.from({ length: 6 }, (_, i) => [`${i + 1}.png`, `커뮤니티 사용 흐름 ${i + 1}`]) },
