@@ -67,3 +67,29 @@
   .gs-footer{font-size:14px;letter-spacing:0}
   .gs-footer button{font-size:16px;min-height:44px}
 }
+
+/* Four previews and the landscape world gallery match the service introduction. */
+.gs-hero-phone{width:34%;max-width:205px}
+.gs-hero-phone-0{left:0;top:30px;transform:rotate(-12deg);z-index:1}
+.gs-hero-phone-1{left:22%;top:0;transform:rotate(-4deg);z-index:2}
+.gs-hero-phone-2{left:44%;right:auto;top:18px;transform:rotate(5deg);z-index:3}
+.gs-hero-phone-3{right:0;top:48px;transform:rotate(13deg);z-index:4}
+.gs-hero-phone .gs-screen{aspect-ratio:9/20}
+.gs-hero-phone .gs-screen img{height:100%;object-fit:cover}
+.gs-world-entry .gs-screen-expand{background:#163d56;color:#fff;border:1px solid #aacbdf}
+.gs-world-screens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.gs-world-screens figure{min-width:0}
+.gs-world-screens .gs-screen{border-width:3px;border-radius:16px}
+.gs-world-screens .gs-screen img{height:auto}
+@media(max-width:640px){
+.gs-hero-phones{width:88%;max-width:440px}
+.gs-hero-phone .gs-screen{border-radius:15px}
+.gs-hero-phone-0{top:24px;transform:rotate(-9deg)}
+.gs-hero-phone-2{top:16px}
+.gs-hero-phone-3{top:38px;transform:rotate(10deg)}
+.gs-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}
+.gs-tabs button{min-width:0;padding:14px 4px;font-size:21px}
+.gs-world-screens{grid-template-columns:1fr;gap:25px}
+.gs-world-screens .gs-screen{border-radius:12px}
+}
+.gs-world-cta{margin-top:24px}
