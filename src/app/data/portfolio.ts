@@ -176,21 +176,6 @@ export const PORTFOLIO: PortfolioGroup[] = [
     ],
   },
   {
-    groupKey: "devUnityWebglGroup",
-    soloDevelopment: true,
-    tools: ["Develop", "Unity", "WebGL"],
-    emoji: "🕹️",
-    items: [
-      {
-        id: "dev_unity_webgl",
-        thumb: asset("images/dev/UnityWebGL/1.png"),
-        thumbFit: "contain",
-        link: asset("unity-webgl-game/index.html"),
-        linkLabel: "play",
-      },
-    ],
-  },
-  {
     groupKey: "devAIGameGroup",
     tools: ["Develop", "Unity", "C#"],
     emoji: "🎮",
