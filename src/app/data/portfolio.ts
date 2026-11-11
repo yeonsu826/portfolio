@@ -41,7 +41,7 @@ export const PORTFOLIO: PortfolioGroup[] = [
     groupKey: "devPraynoteGroup",
     soloDevelopment: true,
     readme: graceseaReadme,
-    tools: ["Develop", "React Native", "Expo", "Supabase"],
+    tools: ["Develop", "Design", "React Native", "Expo", "Supabase"],
     emoji: "🌊",
     items: [
       {
@@ -63,7 +63,7 @@ export const PORTFOLIO: PortfolioGroup[] = [
     soloDevelopment: true,
     readme: petChewReadme,
     concept: "WIP",
-    tools: ["Develop", "Unity", "AR Foundation", "C#"],
+    tools: ["Develop", "Design", "Unity", "AR Foundation", "C#"],
     emoji: "🐈‍⬛",
     items: [
       {
