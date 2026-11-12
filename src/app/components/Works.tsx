@@ -267,6 +267,12 @@ export default function Works({ mainTab, onCategoryChange }: {
                     {(group.groupKey === 'devPraynoteGroup' || group.groupKey === 'devPetChewGroup') && (
                       <Link to={group.groupKey === 'devPetChewGroup' ? '/chapchew' : '/gracesea'} className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary hover:bg-primary/20">{lang === 'en' ? 'Explore project' : '프로젝트 소개 보기'}<ArrowUpRight size={18} /></Link>
                     )}
+                    {group.groupKey === 'devPraynoteGroup' && (
+                      <div className="flex flex-wrap gap-3">
+                        <a href="https://apps.apple.com/kr/app/id6822101326" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-4 py-2 text-sm text-primary hover:bg-primary/10">App Store <ArrowUpRight size={16} /></a>
+                        <a href="https://play.google.com/store/apps/details?id=com.gallbug.gracesea" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-4 py-2 text-sm text-primary hover:bg-primary/10">Google Play <ArrowUpRight size={16} /></a>
+                      </div>
+                    )}
                     {group.readme && group.groupKey !== 'devPraynoteGroup' && group.groupKey !== 'devPetChewGroup' && (
                       <ProjectDetails title={groupName} readme={group.readme} images={allImages} videos={videos} />
                     )}

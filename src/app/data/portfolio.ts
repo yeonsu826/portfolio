@@ -46,8 +46,6 @@ export const PORTFOLIO: PortfolioGroup[] = [
     items: [
       {
         id: "dev_praynote",
-        link: "https://apps.apple.com/kr/app/id6822101326",
-        linkLabel: "appstore",
         videos: [
           { src: asset("videos/gracesea/guide-01.mp4"), label: "오늘의 기록과 묵상" },
           { src: asset("videos/gracesea/guide-02.mp4"), label: "등대에서 함께 기도하기" },

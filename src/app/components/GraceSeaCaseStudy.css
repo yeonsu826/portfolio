@@ -93,3 +93,4 @@
 .gs-world-screens .gs-screen{border-radius:12px}
 }
 .gs-world-cta{margin-top:24px}
+.gs-store-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:28px 0}.gs-store-links .gs-dark-button{margin:0}
