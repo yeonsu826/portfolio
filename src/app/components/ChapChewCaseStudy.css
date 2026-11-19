@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap');
-
-.cc-page{--cc-green:#31533b;--cc-cream:#fff9e9;--cc-lime:#e8ef76;--cc-orange:#f37d52;background:var(--cc-cream);color:var(--cc-green);font-family:'DM Sans','Noto Sans KR',sans-serif;line-height:1.6;overflow:clip;min-height:100vh}
+.cc-page{--cc-green:#31533b;--cc-cream:#fff9e9;--cc-lime:#e8ef76;--cc-orange:#f37d52;background:var(--cc-cream);color:var(--cc-green);font-family:'Noto Sans KR',sans-serif;line-height:1.6;overflow:clip;min-height:100vh}
 .cc-page *{box-sizing:border-box}
 .cc-page :is(h1,h2,h3,p,figure){margin:0}
 .cc-page :is(h1,h2,h3){font-family:inherit;font-weight:800;letter-spacing:-.055em;line-height:1.22;word-break:keep-all}

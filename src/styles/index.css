@@ -1,7 +1,7 @@
 /* ==========================================================================
    1. Imports (가장 위에 있어야 함)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..900;1,9..144,200..900&family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
 @import 'tailwindcss' source(none);
 @import 'tw-animate-css';
 @source '../**/*.{js,ts,jsx,tsx}';
@@ -91,6 +91,9 @@
 }
 
 @theme inline {
+  --font-sans: 'Noto Sans KR', sans-serif;
+  --font-serif: 'Noto Sans KR', sans-serif;
+  --font-mono: 'Noto Sans KR', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -145,6 +148,7 @@
   }
 
   html {
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: var(--font-size);
   }
 

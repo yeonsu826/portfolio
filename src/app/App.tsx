@@ -1,4 +1,3 @@
-import "../styles/index.css";
 import { LangProvider } from "./context/LangContext";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -28,7 +27,7 @@ export default function App() {
   }, [requestedCategory]);
   return (
     <LangProvider>
-      <div className="min-h-screen w-full bg-background" style={{ fontFamily: "'Figtree', sans-serif" }}>
+      <div className="min-h-screen w-full bg-background" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
         <Nav />
         <Hero />
         <Skills />

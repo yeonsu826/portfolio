@@ -223,7 +223,10 @@ export const PORTFOLIO: PortfolioGroup[] = [
       {
         id: "dev_interactiveracing",
         thumb: asset("images/dev/InteractiveRacing/1.png"),
-        galleryImages: numbered("images/dev/InteractiveRacing", 8, "png"),
+        galleryImages: [
+          ...numbered("images/dev/InteractiveRacing", 6, "png"),
+          ...numbered("images/dev/InteractiveRacing", 2, "jpg", 7),
+        ],
       },
     ],
   },

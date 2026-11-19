@@ -41,7 +41,7 @@ export default function CardIntro({ onChoose }: { onChoose: (category: ProjectCa
         </defs>
         <rect width="100%" height="100%" fill="url(#portfolio-pattern)" />
       </svg>
-      <div className="card-intro-topline"><span>CREATIVE DEVELOPER & 3D ARTIST</span><span>PORTFOLIO / SELECTED WORKS</span></div>
+      <div className="card-intro-topline"><span>PORTFOLIO / SELECTED WORKS</span></div>
       <div className="card-stage">
         <div className="card-hand" role="group" aria-label={lang === "ko" ? "프로젝트 카드 선택" : "Choose a project card"}>
           {cards.map((card, index) => {
@@ -62,7 +62,7 @@ export default function CardIntro({ onChoose }: { onChoose: (category: ProjectCa
       <div className="card-intro-copy">
         <p className="card-intro-eyebrow">FOUR CARDS. ENDLESS POSSIBILITIES.</p>
         <h1 id="card-intro-title">Pick your <em>perspective.</em></h1>
-        <p className="card-intro-description" aria-live="polite">{picked ? (lang === "ko" ? `${labels[picked]} 펼치는 중…` : `Opening ${labels[picked]}…`) : (lang === "ko" ? "카드 한 장으로 시작하는, 나의 작업 이야기." : "A collection of ideas, experiences, and things I've made.")}</p>
+        {picked && <p className="card-intro-description" aria-live="polite">{lang === "ko" ? `${labels[picked]} 펼치는 중…` : `Opening ${labels[picked]}…`}</p>}
       </div>
       <button type="button" className="card-intro-skip" onClick={() => choose("all")} disabled={picked !== null}>{lang === "ko" ? "전체 작업 둘러보기" : "Explore all projects"}<ArrowDown size={14} /></button>
       <span className="card-intro-edition">DESIGN · DEVELOP · EXPLORE</span>
