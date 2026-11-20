@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Pause, Play, X } from 'lucide-react';
 import { type PortfolioGroup } from '../../data/portfolio';
 import { useLang } from '../../context/LangContext';
 import { Readme } from '../Readme';
+import { projectDescriptions } from './projectDescriptions';
 import './FileProjectExperience.css';
 
 function projectImages(group: PortfolioGroup) {
@@ -83,21 +84,41 @@ function DraggablePhoto({ src, index, title, boardHeight, onOpen }: { src: strin
   const [angle] = useState(() => Math.random() * 20 - 10);
   const [size] = useState(() => 0.75 + Math.random() * 0.45);
   const [aspectRatio, setAspectRatio] = useState(1);
+  const photo = useRef<HTMLButtonElement>(null);
+  const [bounds, setBounds] = useState({ width: 0, height: 0, boardWidth: 0 });
+  useLayoutEffect(() => {
+    const element = photo.current;
+    if (!element?.parentElement) return;
+    const measure = () => setBounds(previous => {
+      const next = { width: element.offsetWidth, height: element.offsetHeight, boardWidth: element.parentElement!.clientWidth };
+      return previous.width === next.width && previous.height === next.height && previous.boardWidth === next.boardWidth ? previous : next;
+    });
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    observer.observe(element.parentElement);
+    measure();
+    return () => observer.disconnect();
+  }, []);
   // Include the white border and tilted corners in the paper-height limit.
   const radians = Math.abs(angle) * Math.PI / 180;
   const heightPerWidth = Math.sin(radians) + Math.cos(radians) / aspectRatio;
   const borderHeight = 8 * Math.cos(radians) * (1 - 1 / aspectRatio);
   const widthLimit = `calc(var(--archive-board-paper-height) / ${heightPerWidth} ${borderHeight >= 0 ? '-' : '+'} ${Math.abs(borderHeight / heightPerWidth)}px)`;
+  const widthPerWidth = Math.cos(radians) + Math.sin(radians) / aspectRatio;
+  const borderWidth = 8 * Math.sin(radians) * (1 - 1 / aspectRatio);
+  const boardWidthLimit = bounds.boardWidth ? Math.max(1, (bounds.boardWidth - 12 - borderWidth) / widthPerWidth) : 10000;
+  const insetX = Math.max(0, (bounds.width * Math.cos(radians) + bounds.height * Math.sin(radians) - bounds.width) / 2) + 6;
+  const insetY = Math.max(0, (bounds.width * Math.sin(radians) + bounds.height * Math.cos(radians) - bounds.height) / 2) + 6;
   const gesture = useRef<{ pointer: number; startX: number; startY: number; position: Position; width: number; height: number } | null>(null);
   const moved = useRef(false);
   const { lang } = useLang();
-  const clamp = (n: number, max: number) => Math.max(0, Math.min(max, n));
+  const clamp = (n: number, max: number, min = 0) => Math.max(min, Math.min(max, n));
   function start(event: PointerEvent<HTMLButtonElement>) {
     if (event.button !== 0 || !event.isPrimary) return;
     const element = event.currentTarget;
     element.setPointerCapture(event.pointerId);
     moved.current = false;
-    gesture.current = { pointer: event.pointerId, startX: event.clientX, startY: event.clientY, position, width: Math.max(1, (element.parentElement?.clientWidth ?? 1) - element.offsetWidth), height: Math.max(0, boardHeight - element.offsetHeight) };
+    gesture.current = { pointer: event.pointerId, startX: event.clientX, startY: event.clientY, position, width: Math.max(1, (element.parentElement?.clientWidth ?? 1) - element.offsetWidth - 2 * insetX), height: Math.max(0, boardHeight - element.offsetHeight - insetY) };
     setDragging(true);
     setPosition(previous => ({ ...previous, z: Date.now() % 1000000000 }));
   }
@@ -108,7 +129,7 @@ function DraggablePhoto({ src, index, title, boardHeight, onOpen }: { src: strin
     const dy = event.clientY - start.startY;
     if (Math.hypot(dx, dy) > 5) moved.current = true;
     if (!moved.current) return;
-    setPosition(previous => ({ x: clamp(start.position.x + dx / start.width, 1), y: clamp(start.position.y + dy, start.height), z: previous.z }));
+    setPosition(previous => ({ x: clamp(start.position.x + dx / start.width, 1), y: clamp(start.position.y + dy, start.height, insetY), z: previous.z }));
   }
   function end(event: PointerEvent<HTMLButtonElement>) {
     if (gesture.current?.pointer !== event.pointerId) return;
@@ -116,7 +137,7 @@ function DraggablePhoto({ src, index, title, boardHeight, onOpen }: { src: strin
     setDragging(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   }
-  return <button className={`archive-photo ${dragging ? 'is-dragging' : ''}`} style={{ '--photo-x': position.x, '--photo-y': `${position.y}px`, '--photo-angle': `${angle}deg`, '--photo-width': `min(90%, calc(var(--card-width) * ${size}), ${widthLimit})`, zIndex: position.z } as CSSProperties}
+  return <button ref={photo} className={`archive-photo ${dragging ? 'is-dragging' : ''}`} style={{ '--photo-x': position.x, '--photo-inset-x': `${insetX}px`, '--photo-y': `${clamp(position.y, boardHeight - bounds.height - insetY, insetY)}px`, '--photo-angle': `${angle}deg`, '--photo-width': `min(90%, calc(var(--card-width) * ${size}), ${widthLimit}, ${boardWidthLimit}px)`, zIndex: position.z } as CSSProperties}
     onPointerDown={start} onPointerMove={drag} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={() => { gesture.current = null; setDragging(false); }}
     onClick={event => { const image = event.currentTarget.querySelector('img'); if (!moved.current && image) onOpen(image); moved.current = false; }}
     onKeyDown={event => {
@@ -124,9 +145,9 @@ function DraggablePhoto({ src, index, title, boardHeight, onOpen }: { src: strin
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
       event.preventDefault();
       const element = event.currentTarget;
-      const width = Math.max(1, (element.parentElement?.clientWidth ?? 1) - element.offsetWidth);
+      const width = Math.max(1, (element.parentElement?.clientWidth ?? 1) - element.offsetWidth - 2 * insetX);
       const step = event.shiftKey ? 30 : 10;
-      setPosition(previous => ({ ...previous, x: clamp(previous.x + (event.key === 'ArrowLeft' ? -step / width : event.key === 'ArrowRight' ? step / width : 0), 1), y: clamp(previous.y + (event.key === 'ArrowUp' ? -step : event.key === 'ArrowDown' ? step : 0), Math.max(0, boardHeight - element.offsetHeight)) }));
+      setPosition(previous => ({ ...previous, x: clamp(previous.x + (event.key === 'ArrowLeft' ? -step / width : event.key === 'ArrowRight' ? step / width : 0), 1), y: clamp(previous.y + (event.key === 'ArrowUp' ? -step : event.key === 'ArrowDown' ? step : 0), Math.max(0, boardHeight - element.offsetHeight - insetY), insetY) }));
     }} aria-label={`${title} — ${index + 1}. ${lang === 'ko' ? '드래그로 이동, 클릭으로 확대. 방향키로 위치 이동.' : 'Drag to move, click to enlarge. Arrow keys reposition.'}`}>
     <img src={src} alt={`${title} — ${index + 1}`} loading="lazy" draggable={false} onLoad={event => { const image = event.currentTarget; if (image.naturalWidth && image.naturalHeight) setAspectRatio(image.naturalWidth / image.naturalHeight); }} />
   </button>;
@@ -141,8 +162,18 @@ export default function FileProjectExperience({ group }: { group: PortfolioGroup
   const [viewer, setViewer] = useState<{ index: number; origin: HTMLImageElement } | null>(null);
 
   const title = t.groups[group.groupKey];
+  const description = projectDescriptions[group.groupKey]?.[lang === 'ko' ? 'ko' : 'en'];
+  const descriptionPaper = useRef<HTMLDivElement>(null);
+  const [paperHeight, setPaperHeight] = useState(470);
+  useLayoutEffect(() => {
+    const paper = descriptionPaper.current;
+    if (!paper) return;
+    const observer = new ResizeObserver(() => setPaperHeight(paper.offsetHeight));
+    observer.observe(paper);
+    return () => observer.disconnect();
+  }, []);
   const videos = group.items.flatMap(item => item.videos ?? []);
-  const boardHeight = Math.max(750, Math.ceil(images.length / 3) * 300 + 300);
+  const boardHeight = Math.max(850, Math.ceil(images.length / 3) * 300 + 550, paperHeight + 120);
   useEffect(() => {
     if (paused || hovering || viewer !== null || images.length < 2) return;
     const timer = window.setInterval(() => { if (!document.hidden) setSlide(current => (current + 1) % images.length); }, 4500);
@@ -165,9 +196,9 @@ export default function FileProjectExperience({ group }: { group: PortfolioGroup
         <p className="archive-editorial-signature">Jeong Yeon Su<span>Designer & Developer</span></p>
       </div>
     </section>
-    {group.readme && <details className="archive-project-notes"><summary>{lang === 'ko' ? '기획과 제작 과정 읽기' : 'Read the project notes'} ↗</summary><div><Readme text={group.readme} images={images} videos={videos} /></div></details>}
-    <section className="archive-pinboard-section" aria-labelledby={`pinboard-${group.groupKey}`}><header><div><span className="archive-kicker">VISUAL RESEARCH / CONTACT SHEETS</span><h3 id={`pinboard-${group.groupKey}`}>{lang === 'ko' ? '작업의 조각들' : 'Inside the file'}</h3></div><p>{lang === 'ko' ? <>이미지를 드래그해 자유롭게 펼쳐보세요.<br />클릭하면 크게 볼 수 있습니다.</> : <>Drag the images to rearrange.<br />Click any image to look closer.</>}</p></header>
-      <div className="archive-pinboard" style={{ height: boardHeight }}><div className="archive-board-paper" aria-hidden="true"><span>{title}</span><p>{t.groupDescriptions[group.groupKey]}</p><small>COLLECTED MATERIAL / JEONG YEON SU</small></div>{images.map((src, index) => <DraggablePhoto key={src} src={src} index={index} title={title} boardHeight={boardHeight} onOpen={origin => setViewer({ index, origin })} />)}</div>
+    {group.readme && !description && <details className="archive-project-notes"><summary>{lang === 'ko' ? '기획과 제작 과정 읽기' : 'Read the project notes'} ↗</summary><div><Readme text={group.readme} images={images} videos={videos} /></div></details>}
+    <section className="archive-pinboard-section" aria-labelledby={`pinboard-${group.groupKey}`}><header><div><span className="archive-kicker">VISUAL RESEARCH / CONTACT SHEETS</span><h3 id={`pinboard-${group.groupKey}`}>{lang === 'ko' ? '프로젝트 설명' : 'Project description'}</h3></div><p>{lang === 'ko' ? <>이미지를 드래그해 자유롭게 펼쳐보세요.<br />클릭하면 크게 볼 수 있습니다.</> : <>Drag the images to rearrange.<br />Click any image to look closer.</>}</p></header>
+      <div className="archive-pinboard" style={{ height: boardHeight }}><div ref={descriptionPaper} className={`archive-board-paper ${description ? 'is-detailed' : ''}`} aria-hidden={description ? undefined : true}><span>{title}</span>{(description ?? [t.groupDescriptions[group.groupKey]]).map((paragraph, index) => <p key={index}>{paragraph}</p>)}<small>COLLECTED MATERIAL / JEONG YEON SU</small></div>{images.map((src, index) => <DraggablePhoto key={src} src={src} index={index} title={title} boardHeight={boardHeight} onOpen={origin => setViewer({ index, origin })} />)}</div>
     </section>
     {videos.length > 0 && <section className="archive-project-videos" aria-label={lang === 'ko' ? '프로젝트 영상' : 'Project videos'}>{videos.map(video => <figure key={video.src}><video controls playsInline preload="none" aria-label={video.label}><source src={video.src} type="video/mp4" /></video><figcaption>{video.label}</figcaption></figure>)}</section>}
     {viewer !== null && <ImageViewer images={images} startIndex={viewer.index} origin={viewer.origin} title={title} onClose={() => setViewer(null)} />}

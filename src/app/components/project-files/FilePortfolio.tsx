@@ -13,27 +13,43 @@ import { fileRows, fileSelection, tabNames, tabColors, rowTabWidth, type FileRow
 
 type CardFlight = { row: number; key: string; depth: number; sourceTop: number; frontTop: number; width: number; height: number; shifted: boolean; sameGroup: boolean; revealing: boolean };
 type ClosingCover = { next: CardFlight; color: string; row: number; closed: boolean; top: number };
+type ProjectPageTurn = { html: string; top: number; height: number; color: string; ink: string; outline: string };
 const groupShiftTransition = { duration: 0.9, ease: [0.45, 0, 0.2, 1] as [number, number, number, number] };
+
+function MainProjectCoverIndex({ item, back = false }: { item: FileRow; back?: boolean }) {
+  return <div className={`mosby-main-cover-index ${back ? 'is-back' : ''}`}><div className="mosby-row"><div className="mosby-tabs"><span className="mosby-tab" style={{ '--tab-color': item.color, '--tab-ink': '#f8f1e4' } as CSSProperties}><svg viewBox="0 0 240 40" preserveAspectRatio="none"><path d="M0 40 C24 40 23 0 52 0 H188 C217 0 216 40 240 40 Z" /></svg><span>{tabNames[item.keys[0]]}</span></span></div></div></div>;
+}
 
 function FlyingFileCard({ flight, onShift, onReveal, onDone }: { flight: CardFlight; onShift: () => void; onReveal: () => void; onDone: () => void }) {
   const controls = useAnimationControls();
   const coverControls = useAnimationControls();
   const [atFront, setAtFront] = useState(false);
+  const [opening, setOpening] = useState(false);
   const item = fileRows[flight.row];
-  const color = tabColors[flight.key] ?? item.color;
+  const color = flight.sameGroup ? tabColors[flight.key] ?? item.color : item.color;
+  const carryMainIndex = !flight.sameGroup && item.id !== 'all' && flight.key !== item.keys[0];
+  const mainIndex = <div className="mosby-row"><div className="mosby-tabs"><span className="mosby-tab" style={{ '--tab-color': item.color, '--tab-ink': '#f8f1e4' } as CSSProperties}><svg viewBox="0 0 240 40" preserveAspectRatio="none"><path d="M0 40 C24 40 23 0 52 0 H188 C217 0 216 40 240 40 Z" /></svg><span>{tabNames[item.keys[0]]}</span></span></div></div>;
   useEffect(() => {
     let cancelled = false;
     async function turn() {
-      controls.set({ x: 0, y: flight.sourceTop, rotateZ: 0, rotateY: 0, opacity: 1 });
-      await controls.start({ x: flight.width * 1.12, y: flight.sourceTop + 45, rotateZ: 12, rotateY: -12, transition: { duration: 0.75, ease: [0.4, 0, 0.2, 1] } });
+      if (flight.sameGroup) {
+        // Turn the linked project index and page toward the viewer in place.
+        setAtFront(true);
+        controls.set({ x: 0, y: flight.frontTop, rotateZ: 0, rotateY: 0, rotateX: -14, scale: .98, opacity: 1 });
+        await controls.start({ rotateX: 0, scale: [.98, 1.02, 1], transition: { duration: .8, ease: [.4, 0, .2, 1] } });
+      } else {
+        controls.set({ x: 0, y: flight.sourceTop, rotateZ: 0, rotateY: 0, opacity: 1 });
+        await controls.start({ x: flight.width * 1.12, y: flight.sourceTop + 45, rotateZ: 12, rotateY: -12, transition: { duration: 0.75, ease: [0.4, 0, 0.2, 1] } });
+        if (cancelled) return;
+        onShift();
+        // The card stays outside the deck while the remaining file rows close the gap.
+        await controls.start({ x: flight.width * 1.12, y: flight.frontTop + 85, rotateZ: 12, rotateY: -12, transition: groupShiftTransition });
+        if (cancelled) return;
+        setAtFront(true);
+        await controls.start({ x: 0, y: flight.frontTop, rotateZ: 0, rotateY: 0, transition: { duration: 0.85, ease: [0.22, 0.61, 0.36, 1] } });
+      }
       if (cancelled) return;
-      if (!flight.sameGroup) onShift();
-      // The card stays outside the deck while the remaining file rows close the gap.
-      if (!flight.sameGroup) await controls.start({ x: flight.width * 1.12, y: flight.frontTop + 85, rotateZ: 12, rotateY: -12, transition: groupShiftTransition });
-      if (cancelled) return;
-      setAtFront(true);
-      await controls.start({ x: 0, y: flight.frontTop, rotateZ: 0, rotateY: 0, transition: { duration: 0.85, ease: [0.22, 0.61, 0.36, 1] } });
-      if (cancelled) return;
+      setOpening(true);
       onReveal();
       await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
       if (cancelled) return;
@@ -44,12 +60,13 @@ function FlyingFileCard({ flight, onShift, onReveal, onDone }: { flight: CardFli
     return () => { cancelled = true; controls.stop(); coverControls.stop(); };
   }, [controls, coverControls]);
   return <motion.div className={`mosby-flight-card ${flight.sameGroup ? 'is-project-flight' : ''}`} aria-hidden="true" initial={{ x: 0, y: flight.sourceTop }} animate={controls} style={{ zIndex: atFront ? 50 : flight.depth, '--row-color': color, '--tab-width': rowTabWidth(item), '--flight-color': color, '--flight-tab-slot': item.keys.findIndex(key => key === flight.key), '--flight-tab-count': item.keys.length } as CSSProperties}>
-    <div className="mosby-row"><div className="mosby-tabs">{item.keys.filter(key => !flight.sameGroup || key === flight.key).map(key => <span key={key} className="mosby-tab" style={{ '--tab-color': tabColors[key] ?? item.color, '--tab-ink': key === 'devARContentGroup' ? '#161714' : '#f8f1e4' } as CSSProperties}><svg viewBox="0 0 240 40" preserveAspectRatio="none"><path d="M0 40 C24 40 23 0 52 0 H188 C217 0 216 40 240 40 Z" /></svg><span>{tabNames[key]}</span></span>)}</div></div>
-    <motion.div className="mosby-flight-cover" initial={{ rotateX: 0 }} animate={coverControls}>
+    <div className="mosby-row" style={{ visibility: opening ? 'hidden' : undefined }}><div className="mosby-tabs">{item.keys.filter(key => !flight.sameGroup || key === flight.key).map(key => <span key={key} className="mosby-tab" style={{ '--tab-color': tabColors[key] ?? item.color, '--tab-ink': key === 'devARContentGroup' ? '#161714' : '#f8f1e4' } as CSSProperties}><svg viewBox="0 0 240 40" preserveAspectRatio="none"><path d="M0 40 C24 40 23 0 52 0 H188 C217 0 216 40 240 40 Z" /></svg><span>{tabNames[key]}</span></span>)}</div></div>
+    <motion.div className={`mosby-flight-cover ${carryMainIndex && opening ? 'has-main-index' : ''}`} initial={{ rotateX: 0 }} animate={coverControls}>
     <div className="mosby-cover-front">
+    {carryMainIndex && opening && <div className="mosby-main-cover-index">{mainIndex}</div>}
     <div className="mosby-flight-paper" style={{ height: flight.height }} />
     </div>
-    <div className="mosby-cover-back" />
+    <div className="mosby-cover-back">{carryMainIndex && opening && <div className="mosby-main-cover-index is-back">{mainIndex}</div>}</div>
     </motion.div>
   </motion.div>;
 }
@@ -62,6 +79,7 @@ function FileArchive() {
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [flight, setFlight] = useState<CardFlight | null>(null);
   const [closingCover, setClosingCover] = useState<ClosingCover | null>(null);
+  const [pageTurn, setPageTurn] = useState<ProjectPageTurn | null>(null);
   const [homeCover, setHomeCover] = useState<{ top: number; height: number } | null>(null);
   const [returnDeck, setReturnDeck] = useState<ReturnDeck | null>(null);
   const [riseFromBelow, setRiseFromBelow] = useState(false);
@@ -159,11 +177,35 @@ function FileArchive() {
     busy.current = true;
     const pageTop = container.top + source.height * fileRows.length;
     const height = Math.max(120, window.innerHeight - Math.max(0, pageTop) - 24);
+    if (nextRow === activeRow) {
+      const currentPage = section.current.querySelector<HTMLElement>('.mosby-file-sheet');
+      if (!currentPage) { busy.current = false; return; }
+      const snapshot = currentPage.cloneNode(true) as HTMLElement;
+      snapshot.style.setProperty('--selected-tab-index', String(Math.max(0, row.keys.findIndex(projectKey => projectKey === activeKey))));
+      snapshot.style.setProperty('--tab-width', rowTabWidth(row));
+      snapshot.style.setProperty('--group-tab-count', String(row.keys.length));
+      snapshot.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+      snapshot.querySelectorAll('button,a,summary,input,select,textarea').forEach(element => element.setAttribute('tabindex', '-1'));
+      const tab = currentPage.querySelector<HTMLElement>('.mosby-project-tab-row .mosby-tab');
+      const pageRect = currentPage.getBoundingClientRect();
+      const tabRect = tab?.getBoundingClientRect();
+      const left = tabRect ? (tabRect.left - pageRect.left) / pageRect.width : 0;
+      const width = tabRect ? tabRect.width / pageRect.width : 0;
+      const shoulder = (tabRect?.height ?? source.height) / (height + source.height);
+      const outline = tabRect
+        ? `M0 ${shoulder} H${left} C${left + width * .1} ${shoulder} ${left + width * 23 / 240} 0 ${left + width * 52 / 240} 0 H${left + width * 188 / 240} C${left + width * 217 / 240} 0 ${left + width * .9} ${shoulder} ${left + width} ${shoulder} H1 V1 H0 Z`
+        : `M0 ${shoulder} H1 V1 H0 Z`;
+      setPageTurn({ html: snapshot.outerHTML, top: source.height * (fileRows.length - 1), height: height + source.height, color: sheetColor, ink: sheetInk, outline });
+      setActiveKey(key);
+      setFrontProjects(previous => ({ ...previous, [fileRows[nextRow].id]: key }));
+      return;
+    }
     const next: CardFlight = { row: nextRow, key, depth: groupOrder.indexOf(nextRow) * 2 + 2, sourceTop: source.top - container.top, frontTop: source.height * (fileRows.length - 1), width: container.width, height, shifted: false, sameGroup: nextRow === activeRow, revealing: false };
-    setClosingCover({ next, color: sheetColor, row: activeRow, closed: false, top: source.height * fileRows.length });
+    setClosingCover({ next, color: row.color, row: activeRow, closed: false, top: source.height * fileRows.length });
   }
   function renderTab(key: string, item: FileRow) {
-    return <button key={key} id={`project-tab-${key}`} className={`mosby-tab ${activeKey === key ? 'is-selected-project' : ''}`} style={{ visibility: flight?.sameGroup && !flight.revealing && flight.key === key ? 'hidden' : undefined, '--tab-color': tabColors[key] ?? item.color, '--tab-ink': key === 'devARContentGroup' ? '#161714' : '#f8f1e4' } as CSSProperties} aria-label={t.groups[key as keyof typeof t.groups] ?? tabNames[key]} aria-pressed={activeKey === key} aria-controls="mosby-content" disabled={!!flight || !!closingCover || !!homeCover || !!returnDeck} onClick={() => { const target = fileSelection(key); chooseProject(target.row, target.key); }}>
+    const mainTurning = !!flight?.revealing && !flight.sameGroup && item.id !== 'all' && flight.row === fileRows.indexOf(item) && flight.key !== item.keys[0] && key === item.keys[0];
+    return <button key={key} id={`project-tab-${key}`} className={`mosby-tab ${activeKey === key ? 'is-selected-project' : ''}`} style={{ visibility: mainTurning || (flight?.sameGroup && !flight.revealing && flight.key === key) ? 'hidden' : undefined, '--tab-color': tabColors[key] ?? item.color, '--tab-ink': key === 'devARContentGroup' ? '#161714' : '#f8f1e4' } as CSSProperties} aria-label={t.groups[key as keyof typeof t.groups] ?? tabNames[key]} aria-pressed={activeKey === key} aria-controls="mosby-content" disabled={!!flight || !!closingCover || !!pageTurn || !!homeCover || !!returnDeck} onClick={() => { const target = fileSelection(key); chooseProject(target.row, target.key); }}>
       <svg viewBox="0 0 240 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C24 40 23 0 52 0 H188 C217 0 216 40 240 40 Z" /></svg><span>{tabNames[key]}</span>
     </button>;
   }
@@ -174,7 +216,7 @@ function FileArchive() {
     const behind = stackedRows[stackedRows.findIndex(candidate => candidate.id === item.id) - 1];
     const behindColor = behind ? tabColors[frontProjects[behind.id]] ?? behind.color : 'var(--archive-background)';
     const transferring = !!flight && !flight.sameGroup && item.id === fileRows[flight.row].id;
-    return <motion.div key={item.id} layout={transferring ? false : 'position'} data-group-id={item.id} initial={entry && !isActive ? { y: 100, opacity: 0 } : false} animate={{ y: entry && !entry.revealing && !isActive ? 100 : 0, opacity: entry && !entry.revealing && !isActive ? 0 : 1 }} transition={{ layout: groupShiftTransition, y: { duration: 1, delay: .25 + groupOrder.indexOf(fileRows.indexOf(item)) * .12, ease: [.4, 0, .2, 1] }, opacity: { duration: .5, delay: .25 } }} className={`mosby-row ${isActive ? 'is-front-group' : ''} ${extracting ? 'is-extracting-group' : ''}`} style={{ position: 'absolute', top: `calc(${groupOrder.indexOf(fileRows.indexOf(item))} * var(--row-height))`, left: 0, right: 0, zIndex: isActive ? 11 : groupOrder.indexOf(fileRows.indexOf(item)) * 2 + 1, visibility: isActive && ((entry && !entry.revealing) || (flight?.shifted && !flight.revealing)) ? 'hidden' : undefined, '--behind-cover-color': behindColor, '--row-color': isActive ? sheetColor : tabColors[frontProjects[item.id]] ?? item.color, '--row-ink': isActive ? sheetInk : '#f8f1e4', '--tab-width': rowTabWidth(item) } as CSSProperties}>
+    return <motion.div key={item.id} layout={transferring ? false : 'position'} data-group-id={item.id} initial={entry && !isActive ? { y: 0, opacity: 0 } : false} animate={{ y: 0, opacity: entry && !entry.revealing && !isActive ? 0 : 1 }} transition={{ layout: groupShiftTransition, y: { duration: .9, delay: groupOrder.indexOf(fileRows.indexOf(item)) * .08, ease: [.4, 0, .2, 1] }, opacity: { duration: entry ? 0 : .5, delay: 0 } }} className={`mosby-row ${isActive ? 'is-front-group' : ''} ${extracting ? 'is-extracting-group' : ''}`} style={{ position: 'absolute', top: `calc(${groupOrder.indexOf(fileRows.indexOf(item))} * var(--row-height))`, left: 0, right: 0, zIndex: isActive ? 11 : groupOrder.indexOf(fileRows.indexOf(item)) * 2 + 1, visibility: isActive && ((entry && !entry.revealing) || (flight?.shifted && !flight.revealing)) ? 'hidden' : undefined, '--behind-cover-color': behindColor, '--row-color': isActive ? sheetColor : tabColors[frontProjects[item.id]] ?? item.color, '--row-ink': isActive ? sheetInk : '#f8f1e4', '--tab-width': rowTabWidth(item) } as CSSProperties}>
       <div className="mosby-tabs" role="group" aria-label={item.caption}>{item.keys.map(key => maskSelected && key === activeKey ? <span key={key} className="mosby-tab-placeholder" aria-hidden="true" /> : renderTab(key, item))}</div>
     </motion.div>;
   }
@@ -184,7 +226,7 @@ function FileArchive() {
       <motion.div className="archive-frame-panel" data-panel-mode={expandedPanel ? 'vertical' : 'horizontal'} aria-hidden="true" initial={false} style={{ x: '-50%' }} animate={{ width: expandedPanel ? panelWidths.expanded : panelWidths.base, y: expandedPanel ? -48 : 0, scaleY: expandedPanel ? 1.08 : 1 }} transition={{ duration: 1.2, ease: [.4, 0, .2, 1] }} />
       <header className="archive-masthead">
         <span className="archive-masthead-category">DESIGN / DEVELOPMENT</span>
-        <a className="archive-wordmark" href="#/" aria-label="Jeong Yeon Su project files" onClick={event => { event.preventDefault(); returnToIntroduction(); }} aria-disabled={!!flight || !!closingCover || !!homeCover || !!returnDeck}>YEONSU’S FILES</a>
+        <a className="archive-wordmark" href="#/" aria-label="Jeong Yeon Su project files" onClick={event => { event.preventDefault(); returnToIntroduction(); }} aria-disabled={!!flight || !!closingCover || !!pageTurn || !!homeCover || !!returnDeck}>YEONSU’S FILES</a>
         <a className="archive-contact-link" href="mailto:yeonsu826@gmail.com">Contact ↗</a>
       </header>
       <section className="archive-heading" aria-labelledby="archive-title">
@@ -192,9 +234,9 @@ function FileArchive() {
       </section>
     <MotionConfig reducedMotion="never">
     {!deckOpen && <FileDeckIntro lang={lang} onChoose={enterGroup} returning={riseFromBelow} onReady={() => { setRiseFromBelow(false); busy.current = false; }} />}
-    {deckOpen && <section ref={section} className={`mosby-files ${entry ? 'is-entering-deck' : ''} ${returnDeck ? 'is-returning-deck' : ''}`} aria-busy={!!flight || !!closingCover || !!homeCover || !!returnDeck || !!entry} aria-label={lang === 'ko' ? '정연수 프로젝트 파일' : 'Jeong Yeon Su project files'}>
+    {deckOpen && <section ref={section} className={`mosby-files ${entry ? 'is-entering-deck' : ''} ${returnDeck ? 'is-returning-deck' : ''}`} aria-busy={!!flight || !!closingCover || !!pageTurn || !!homeCover || !!returnDeck || !!entry} aria-label={lang === 'ko' ? '정연수 프로젝트 파일' : 'Jeong Yeon Su project files'}>
       <div className="mosby-stack" style={{ height: `calc(${fileRows.length - 1} * var(--row-height))` }}>{groupOrder.map(index => renderRow(fileRows[index], index === frontRow && index === activeRow))}</div>
-      <motion.div className={`mosby-active-group ${flight?.revealing || entry?.revealing ? 'is-opening-cover' : ''} ${closingCover || homeCover ? 'is-closing-cover' : ''} ${(flight && !flight.sameGroup && flight.shifted && !flight.revealing) || (entry && !entry.revealing) ? 'is-awaiting-front' : ''}`} style={{ pointerEvents: flight || closingCover || homeCover ? 'none' : undefined, '--cover-height': entry ? `${entry.coverHeight ?? 240}px` : homeCover ? `${homeCover.height}px` : closingCover ? `${closingCover.next.height}px` : flight ? `${flight.height}px` : undefined, '--tab-width': rowTabWidth(row), '--group-tab-count': row.keys.length, '--selected-tab-index': Math.max(0, row.keys.findIndex(key => key === activeKey)) } as CSSProperties}>
+      <motion.div className={`mosby-active-group ${flight?.revealing || entry?.revealing || pageTurn ? 'is-opening-cover' : ''} ${closingCover || homeCover ? 'is-closing-cover' : ''} ${(flight && !flight.sameGroup && flight.shifted && !flight.revealing) || (entry && !entry.revealing) ? 'is-awaiting-front' : ''}`} style={{ pointerEvents: flight || closingCover || pageTurn || homeCover ? 'none' : undefined, '--cover-height': pageTurn ? `${pageTurn.height}px` : entry ? `${entry.coverHeight ?? 240}px` : homeCover ? `${homeCover.height}px` : closingCover ? `${closingCover.next.height}px` : flight ? `${flight.height}px` : undefined, '--tab-width': rowTabWidth(row), '--group-tab-count': row.keys.length, '--selected-tab-index': Math.max(0, row.keys.findIndex(key => key === activeKey)) } as CSSProperties}>
         <div key={activeKey ?? 'introduction'} className="mosby-file-sheet mosby-project-file">
           <div className="mosby-project-tab-row" style={{ '--project-color': sheetColor } as CSSProperties}>{activeKey && activeKey !== 'allProjects' && renderTab(activeKey, row)}</div>
           <div id="mosby-content" className={`mosby-paper ${!selected ? 'is-introduction' : ''} ${activeKey === 'devARContentGroup' ? 'is-light-sheet' : ''}`} style={{ backgroundColor: sheetColor, color: sheetInk, visibility: closingCover?.closed || (entry && !entry.revealing) ? 'hidden' : undefined }} role="region" aria-label={selected ? t.groups[selected.groupKey] : showingDirectory ? 'All project groups' : 'Portfolio introduction'} aria-labelledby={selected ? `project-tab-${selected.groupKey}` : undefined}>
@@ -213,8 +255,11 @@ function FileArchive() {
           </div>
         </div>
       </motion.div>
-      {closingCover && <motion.div className="mosby-closing-cover" aria-hidden="true" style={{ top: closingCover.top, height: closingCover.next.height, '--flight-color': closingCover.color } as CSSProperties} initial={{ rotateX: -180, y: 0 }} animate={closingCover.closed ? { rotateX: 0, y: flight?.shifted ? -closingCover.top / fileRows.length : 0 } : { rotateX: [-180, -78, 0], y: 0 }} transition={closingCover.closed ? groupShiftTransition : { duration: 1.15, times: [0, 0.5, 1], ease: [0.4, 0, 0.2, 1] }} onAnimationComplete={() => { if (!closingCover.closed) { setClosingCover(previous => previous ? { ...previous, closed: true } : null); setFlight(closingCover.next); } }}>
-        <div className="mosby-cover-front"><div className="mosby-flight-paper" style={{ height: '100%' }} /></div><div className="mosby-cover-back" />
+      {pageTurn && <div className="mosby-project-turn-boundary" style={{ height: pageTurn.top + pageTurn.height }}><motion.div className="mosby-project-page-turn" aria-hidden="true" style={{ top: pageTurn.top, height: pageTurn.height, '--paper-color': pageTurn.color, '--sheet-ink': pageTurn.ink, '--flight-color': pageTurn.color } as CSSProperties} initial={{ rotateX: 0 }} animate={{ rotateX: [0, -78, -180] }} transition={{ duration: 1.65, times: [0, .5, 1], ease: [.4, 0, .2, 1] }} onAnimationComplete={() => { setPageTurn(null); busy.current = false; const overview = section.current?.querySelector<HTMLElement>('.archive-editorial'); if (overview) cancelOverviewScroll.current = smoothScrollToElement(overview); }}>
+        <svg width="0" height="0" className="mosby-turn-outline" aria-hidden="true"><defs><clipPath id="project-page-turn-outline" clipPathUnits="objectBoundingBox"><path d={pageTurn.outline} /></clipPath></defs></svg><div className="mosby-cover-front" style={{ clipPath: 'url(#project-page-turn-outline)' }} dangerouslySetInnerHTML={{ __html: pageTurn.html }} /><div className="mosby-cover-back" style={{ clipPath: 'url(#project-page-turn-outline)' }} />
+      </motion.div></div>}
+      {closingCover && <motion.div className="mosby-closing-cover" aria-hidden="true" style={{ top: closingCover.top, height: closingCover.next.height, '--row-color': closingCover.color, '--tab-width': rowTabWidth(fileRows[closingCover.row]), '--flight-color': closingCover.color } as CSSProperties} initial={{ rotateX: -180, y: 0 }} animate={closingCover.closed ? { rotateX: 0, y: flight?.shifted ? -closingCover.top / fileRows.length : 0 } : { rotateX: [-180, -78, 0], y: 0 }} transition={closingCover.closed ? groupShiftTransition : { duration: 1.15, times: [0, 0.5, 1], ease: [0.4, 0, 0.2, 1] }} onAnimationComplete={() => { if (!closingCover.closed) { const closedRow = fileRows[closingCover.row]; setFrontProjects(previous => ({ ...previous, [closedRow.id]: closedRow.id === 'all' ? 'allProjects' : closedRow.keys[0] })); setClosingCover(previous => previous ? { ...previous, closed: true } : null); setFlight(closingCover.next); } }}>
+        <div className="mosby-cover-front"><MainProjectCoverIndex item={fileRows[closingCover.row]} /><div className="mosby-flight-paper" style={{ height: '100%' }} /></div><div className="mosby-cover-back"><MainProjectCoverIndex item={fileRows[closingCover.row]} back /></div>
       </motion.div>}
       {homeCover && <motion.div className="mosby-closing-cover archive-home-cover" aria-hidden="true" style={{ top: homeCover.top, height: homeCover.height, '--flight-color': sheetColor } as CSSProperties} initial={{ rotateX: -180 }} animate={{ rotateX: [-180, -78, 0] }} transition={{ duration: 1.1, times: [0, .5, 1], ease: [.4, 0, .2, 1] }} onAnimationComplete={collectReturningFiles}>
         <div className="mosby-cover-front"><div className="mosby-flight-paper" style={{ height: '100%' }} /></div><div className="mosby-cover-back" />

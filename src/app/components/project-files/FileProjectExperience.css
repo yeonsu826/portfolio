@@ -189,7 +189,7 @@
 
 .mosby-portfolio .archive-photo {
   position: absolute;
-  left: calc(var(--photo-x) * (100% - var(--photo-width)));
+  left: calc(var(--photo-inset-x,6px) + var(--photo-x) * (100% - var(--photo-width) - 2 * var(--photo-inset-x,6px)));
   top: var(--photo-y);
   width: var(--photo-width);
   padding: 0;
@@ -239,7 +239,7 @@
   height: var(--archive-board-paper-height);
   background: #f3df91;
   color: #25241f;
-  transform: rotate(3deg);
+  transform: none;
   box-shadow: 2px 4px 10px #0002;
 }
 
@@ -524,6 +524,17 @@
   max-width: 200px;
   margin-top: 24px;
   font: 8px/1.6 'Noto Sans KR',sans-serif;
+}
+
+.archive-board-paper.is-detailed {
+  height: auto;
+  min-height: var(--archive-board-paper-height);
+}
+
+.archive-board-paper.is-detailed p {
+  max-width: 540px;
+  font-size: 12px;
+  line-height: 1.95;
 }
 
 @media (max-width:700px) {

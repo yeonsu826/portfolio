@@ -186,7 +186,7 @@
 .archive-fan-file .mosby-tab {
   width: var(--tab-width);
   flex: 0 0 var(--tab-width);
-  font-size: var(--deck-tab-font);
+  font-size: var(--deck-tab-font-fit,var(--deck-tab-font));
   padding: 0 5px;
 }
 
@@ -196,7 +196,8 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: calc(100% - var(--row-height));
+  height: calc(100% - var(--row-height) + 1px);
+  margin-top: -1px;
   padding: 24px 6%;
   border: 0;
   border-radius: 0;
@@ -299,8 +300,33 @@
   transform-origin: 50% 50%;
 }
 
+.mosby-portfolio .archive-deck-source {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  filter: none;
+}
+
+.archive-entry-file {
+  position: absolute;
+  inset: 0;
+}
+
+.archive-entry-selected {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+}
+
+.archive-entry-file-cover {
+  height: calc(100% - var(--row-height) + 1px);
+  margin-top: -1px;
+}
+
 .archive-deck-flight .mosby-flight-cover {
-  height: calc(100% - var(--row-height));
+  height: calc(100% - var(--row-height) + 1px);
+  margin-top: -1px;
 }
 
 .archive-deck-flight .mosby-cover-front,
@@ -402,7 +428,7 @@
 .mosby-row:before {
   content: '';
   position: absolute;
-  top: var(--tab-height);
+  top: calc(var(--tab-height) - 1px);
   left: 0;
   right: 0;
   height: var(--row-height);
@@ -507,6 +533,7 @@
   height: 100%;
   z-index: -1;
   fill: var(--tab-color);
+  filter: drop-shadow(0 -2px 4px #00000020);
 }
 
 .mosby-tab span {
@@ -947,6 +974,7 @@
 
 .mosby-flight-card.is-project-flight {
   filter: drop-shadow(12px 18px 24px #0004);
+  transform-origin: 50% 100%;
 }
 
 .mosby-flight-card.is-project-flight .mosby-row:before {
@@ -973,6 +1001,33 @@
 .mosby-flight-cover {
   position: relative;
   transform-style: preserve-3d;
+}
+
+.mosby-flight-cover.has-main-index {
+  z-index: 3;
+}
+
+.mosby-main-cover-index {
+  position: absolute;
+  top: calc(-1 * var(--row-height));
+  left: 0;
+  width: 100%;
+  height: var(--row-height);
+}
+
+.mosby-main-cover-index.is-back {
+  top: auto;
+  bottom: calc(-1 * var(--row-height));
+  transform: rotateX(180deg);
+}
+
+.mosby-main-cover-index .mosby-tab > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding-top: 0;
+  text-align: center;
 }
 
 .mosby-flight-paper {
@@ -1029,10 +1084,44 @@
   position: absolute;
   left: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 20;
   pointer-events: none;
   transform-origin: 50% 100%;
   transform-style: preserve-3d;
+}
+
+.mosby-project-page-turn {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+}
+
+.mosby-project-turn-boundary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  pointer-events: none;
+  perspective: 1800px;
+  perspective-origin: 50% 100%;
+  clip-path: inset(-100vmax -100vmax 0 -100vmax);
+}
+
+.mosby-project-page-turn > .mosby-cover-front {
+  height: 100%;
+  overflow: hidden;
+  background: var(--paper-color);
+  color: var(--sheet-ink);
+}
+
+.mosby-turn-outline {
+  position: absolute;
+  pointer-events: none;
 }
 
 .mosby-closing-cover>.mosby-cover-front {

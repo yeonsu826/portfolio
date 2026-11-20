@@ -12,11 +12,11 @@ export const tabNames: Record<string, string> = {
   devAIVideoletterGroup: 'AI Letter', devTaeanGroup: 'Taean', devGeumsanGroup: 'Geumsan', devWorkGroup: 'Process',
 };
 export const tabColors: Record<string, string> = {
-  allProjects: '#d91618', 'group-development': '#0d7868', 'group-design': '#581c70', 'group-independent': '#2349d5',
+  allProjects: '#d91618', 'group-development': '#d91618', 'group-design': '#581c70', 'group-independent': '#2349d5',
   devPraynoteGroup: '#2349d5', devPetChewGroup: '#d91618', devManittoGroup: '#4c46bb',
-  cafe: '#0d7868', gamingroom: '#316f45', stage: '#147f91',
+  cafe: '#581c70', gamingroom: '#316f45', stage: '#147f91',
   jinu: '#581c70', glasses: '#9b376a', devARContentGroup: '#fff22b', devAIGameGroup: '#141716',
-  devInteractiveRacingGroup: '#bf321d', devAIVideoletterGroup: '#2349d5',
+  devInteractiveRacingGroup: '#0d7868', devAIVideoletterGroup: '#2349d5',
   devTaeanGroup: '#9c461d', devGeumsanGroup: '#aa2945', devWorkGroup: '#743846',
 };
 export type FileRow = (typeof fileRows)[number];

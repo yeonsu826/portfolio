@@ -13,7 +13,7 @@ const groupDescriptions = [
   { ko: '공간과 사물, 캐릭터의 형태와 분위기를 설계합니다. 3D 모델링과 재질, 조명, 렌더링을 통해 장면을 완성하고 시각적인 경험을 만들어갑니다.', en: 'Spaces, objects, and characters shaped through 3D modeling, materials, lighting, and rendering.' },
   { ko: '일상에서 발견한 작은 아이디어를 서비스로 만듭니다. 기획과 디자인, 개발을 직접 이어가며 하나의 프로젝트를 완성해가는 과정을 담았습니다.', en: 'Everyday ideas turned into independent projects, connecting planning, design, and development from start to finish.' },
 ];
-export type DeckSelection = { row: number; key: string; source: { left: number; top: number; width: number; height: number }; angle: number };
+export type DeckSelection = { row: number; key: string; source: { left: number; top: number; width: number; height: number }; angle: number; snapshot?: { html: string; color: string; rowHeight: string; tabHeight: string; tabFont: string } };
 
 export function FileDeckIntro({ onChoose, lang, returning = false, onReady }: { onChoose: (selection: DeckSelection) => void; lang: string; returning?: boolean; onReady?: () => void }) {
   const [arrival, setArrival] = useState<'rising' | 'spread' | 'done'>(returning ? 'rising' : 'done');
@@ -33,6 +33,31 @@ export function FileDeckIntro({ onChoose, lang, returning = false, onReady }: { 
   const [phase, setPhase] = useState<'idle' | 'extract' | 'collect'>('idle');
   const collectionComplete = useRef({ outer: false, inner: false, committed: false });
   const fan = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const element = fan.current;
+    if (!element) return;
+    const context = document.createElement('canvas').getContext('2d');
+    if (!context) return;
+    let disposed = false;
+    const tabs = Array.from(element.querySelectorAll<HTMLElement>('.mosby-tab'));
+    function fitTabLabels() {
+      if (disposed) return;
+      const baseSize = parseFloat(getComputedStyle(element!).getPropertyValue('--deck-tab-font'));
+      tabs.forEach(tab => {
+        const style = getComputedStyle(tab);
+        context!.font = `${style.fontWeight} ${baseSize}px ${style.fontFamily}`;
+        const textWidth = context!.measureText(tab.textContent ?? '').width;
+        // Leave space for both curved shoulders of the folder tab.
+        const available = Math.max(1, tab.clientWidth * .76 - 10);
+        tab.style.setProperty('--deck-tab-font-fit', `${Math.min(baseSize, baseSize * available / Math.max(1, textWidth))}px`);
+      });
+    }
+    const observer = new ResizeObserver(fitTabLabels);
+    tabs.forEach(tab => observer.observe(tab));
+    fitTabLabels();
+    void document.fonts.ready.then(fitTabLabels);
+    return () => { disposed = true; observer.disconnect(); };
+  }, []);
   useLayoutEffect(() => {
     const photos = Array.from(fan.current?.querySelectorAll<HTMLElement>('.archive-fan-preview') ?? []);
     function keepPhotosInside() {
@@ -115,7 +140,10 @@ export function FileDeckIntro({ onChoose, lang, returning = false, onReady }: { 
     const inner = surface ? new DOMMatrixReadOnly(getComputedStyle(surface).transform) : new DOMMatrixReadOnly();
     const angle = (Math.atan2(transform.b, transform.a) + Math.atan2(inner.b, inner.a)) * 180 / Math.PI;
     const target = fileSelection(key);
-    onChoose({ ...target, source: { left: rect.left + (rect.width - width) / 2, top: rect.top + (rect.height - height) / 2, width, height }, angle });
+    const style = getComputedStyle(file);
+    // Freeze our rendered file, including its fitted labels and randomized photos.
+    const snapshot = { html: surface?.innerHTML ?? '', color: deckRows[choice.row].color, rowHeight: style.getPropertyValue('--row-height'), tabHeight: style.getPropertyValue('--tab-height'), tabFont: style.getPropertyValue('--deck-tab-font') };
+    onChoose({ ...target, source: { left: rect.left + (rect.width - width) / 2, top: rect.top + (rect.height - height) / 2, width, height }, angle, snapshot });
   }
   return <section data-deck-phase={phase} data-deck-arrival={arrival} aria-busy={!!choice || arrival !== 'done'} className="archive-deck-intro" aria-label={lang === 'ko' ? '그룹 파일 선택' : 'Choose a group file'}>
     <p className="archive-deck-hint">{lang === 'ko' ? '하나의 파일을 골라 작업을 펼쳐보세요.' : 'Pick a file. Explore the work inside.'}</p>
@@ -151,10 +179,14 @@ export function FileDeckIntro({ onChoose, lang, returning = false, onReady }: { 
 export function OpeningDeckFile({ selection, section, onReveal, onDone }: { selection: DeckSelection; section: RefObject<HTMLElement | null>; onReveal: (height: number) => void; onDone: () => void }) {
   const card = useAnimationControls();
   const cover = useAnimationControls();
+  const files = useAnimationControls();
+  const [showSource, setShowSource] = useState(!!selection.snapshot);
+  const [arrived, setArrived] = useState(false);
+  const [spreading, setSpreading] = useState(false);
   const row = fileRows[selection.row];
   const color = tabColors[selection.key] ?? row.color;
   useLayoutEffect(() => {
-    card.set({ x: selection.source.left, y: selection.source.top, width: selection.source.width, height: selection.source.height, rotate: selection.angle });
+    card.set({ x: selection.source.left, y: selection.source.top, width: selection.source.width, height: selection.source.height, rotate: selection.angle, scale: 1, rotateX: 0 });
   }, [card]);
   useEffect(() => {
     let cancelled = false;
@@ -163,18 +195,53 @@ export function OpeningDeckFile({ selection, section, onReveal, onDone }: { sele
       if (!target) return;
       const rect = target.getBoundingClientRect();
       const rowHeight = parseFloat(getComputedStyle(target.querySelector('.mosby-row')!).height);
+      const tabHeight = parseFloat(getComputedStyle(target).getPropertyValue('--tab-height')) || rowHeight * .76;
       const height = Math.max(240, window.innerHeight - Math.max(0, rect.top + rowHeight * fileRows.length) - 24);
-      await card.start({ x: rect.left, y: rect.top + rowHeight * (fileRows.length - 1), width: rect.width, height: height + rowHeight, rotate: 0, transition: { duration: 1.35, ease: [.4, 0, .2, 1] } });
+      const destinationY = rect.top + rowHeight * (fileRows.length - 1);
+      const lowerY = window.innerHeight - Math.min(tabHeight, parseFloat(selection.snapshot?.tabHeight ?? '') || tabHeight) - 20;
+      const loweredX = rect.left + (rect.width - selection.source.width) / 2;
+      // Keep the original cover intact until it is fully below the viewport.
+      await card.start({
+        x: loweredX,
+        y: lowerY,
+        rotate: 0,
+        rotateX: 0,
+        scale: 1,
+        filter: 'drop-shadow(0px 6px 10px #0002)',
+        transition: {
+          duration: 1.1,
+          ease: 'easeInOut',
+        },
+      });
       if (cancelled) return;
+      setShowSource(false);
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+      if (cancelled) return;
+      await card.start({ x: rect.left, width: rect.width, height: height + rowHeight, transition: { duration: .4, ease: 'easeInOut' } });
+      if (cancelled) return;
+      setSpreading(true);
+      await Promise.all([
+        card.start({ y: destinationY, transition: { duration: 1.1, ease: [.4, 0, .2, 1] } }),
+        files.start((slot: number) => ({ y: -(fileRows.length - 1 - slot) * rowHeight, transition: { duration: 1.1, ease: [.4, 0, .2, 1] } })),
+      ]);
+      if (cancelled) return;
+      setArrived(true);
       onReveal(height);
       await cover.start({ rotateX: [0, -78, -180], transition: { duration: 1.55, delay: 1.25, times: [0, .5, 1], ease: [.4, 0, .2, 1] } });
       if (!cancelled) onDone();
     }
     void open();
-    return () => { cancelled = true; card.stop(); cover.stop(); };
-  }, [card, cover]);
-  return <motion.div className="archive-deck-flight" animate={card} aria-hidden="true" style={{ '--row-color': color, '--flight-color': color, '--tab-width': rowTabWidth(row) } as CSSProperties}>
+    return () => { cancelled = true; card.stop(); cover.stop(); files.stop(); };
+  }, [card, cover, files]);
+  return <motion.div className="archive-deck-flight" animate={card} aria-hidden="true" style={{ transformPerspective: 1400, '--row-color': color, '--flight-color': color, '--tab-width': rowTabWidth(row) } as CSSProperties}>
+    {!arrived && fileRows.filter(item => item.id !== row.id).map((item, slot) => <motion.div key={item.id} className="archive-entry-file" custom={slot} initial={{ y: 0 }} animate={files} style={{ visibility: spreading ? 'visible' : 'hidden', zIndex: slot + 1, '--row-color': item.color, '--tab-width': rowTabWidth(item) } as CSSProperties}>
+      <div className="mosby-row"><div className="mosby-tabs">{item.keys.map(key => <span key={key} className="mosby-tab" style={{ '--tab-color': tabColors[key], '--tab-ink': key === 'devARContentGroup' ? '#191a18' : '#f8f1e4' } as CSSProperties}><svg viewBox="0 0 240 40" preserveAspectRatio="none"><path d="M0 40 C24 40 23 0 52 0 H188 C217 0 216 40 240 40 Z" /></svg><span>{tabNames[key]}</span></span>)}</div></div>
+      <div className="archive-entry-file-cover" style={{ background: item.color }} />
+    </motion.div>)}
+    <div className="archive-entry-selected">
+    {showSource && selection.snapshot && <div className="archive-fan-file archive-deck-source" style={{ '--fan-color': selection.snapshot.color, '--row-color': selection.snapshot.color, '--row-height': selection.snapshot.rowHeight, '--tab-height': selection.snapshot.tabHeight, '--deck-tab-font': selection.snapshot.tabFont, '--deck-file-height': `${selection.source.height}px`, '--tab-width': rowTabWidth(row) } as CSSProperties} dangerouslySetInnerHTML={{ __html: selection.snapshot.html }} />}
     <div className="mosby-row"><div className="mosby-tabs">{row.keys.map(key => <span key={key} className="mosby-tab" style={{ '--tab-color': tabColors[key], '--tab-ink': key === 'devARContentGroup' ? '#191a18' : '#f8f1e4' } as CSSProperties}><svg viewBox="0 0 240 40" preserveAspectRatio="none"><path d="M0 40 C24 40 23 0 52 0 H188 C217 0 216 40 240 40 Z" /></svg><span>{tabNames[key]}</span></span>)}</div></div>
     <motion.div className="mosby-flight-cover" initial={{ rotateX: 0 }} animate={cover}><div className="mosby-cover-front"><div className="mosby-flight-paper" /></div><div className="mosby-cover-back" /></motion.div>
+    </div>
   </motion.div>;
 }
