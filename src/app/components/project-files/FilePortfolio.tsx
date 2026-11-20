@@ -5,6 +5,8 @@ import { LangProvider, useLang } from '../../context/LangContext';
 import { PORTFOLIO } from '../../data/portfolio';
 import { smoothScrollToElement } from '../../utils/smoothScrollToElement';
 import FileProjectExperience from './FileProjectExperience';
+import FileVideoGallery from './FileVideoGallery';
+import { VIMEO_VIDEOS } from '../../data/videos';
 import ReturningFileDeck, { type ReturnDeck } from './ReturningFileDeck';
 import { FileDeckIntro, OpeningDeckFile, type DeckSelection } from './FileDeckIntro';
 import './FilePortfolio.css';
@@ -117,6 +119,7 @@ function FileArchive() {
   const directoryGroup = activeKey?.startsWith('group-') ? fileRows.find(item => item.id === activeKey.slice(6)) : undefined;
   const directoryRows = directoryGroup ? [directoryGroup] : fileRows.filter(item => item.id !== 'all');
   const showingDirectory = activeKey === 'allProjects' || !!directoryGroup;
+  const directoryVideos = VIMEO_VIDEOS.filter(video => !directoryGroup || (directoryGroup.id === 'design' && !video.tools?.includes('Unity')) || (directoryGroup.id === 'development' && video.tools?.includes('Unity')));
   const row = fileRows[activeRow];
   const frontRow = flight && !flight.sameGroup && flight.shifted && !flight.revealing ? flight.row : activeRow;
   const sheetColor = activeKey ? tabColors[activeKey] ?? row.color : row.color;
@@ -240,7 +243,7 @@ function FileArchive() {
         <div key={activeKey ?? 'introduction'} className="mosby-file-sheet mosby-project-file">
           <div className="mosby-project-tab-row" style={{ '--project-color': sheetColor } as CSSProperties}>{activeKey && activeKey !== 'allProjects' && renderTab(activeKey, row)}</div>
           <div id="mosby-content" className={`mosby-paper ${!selected ? 'is-introduction' : ''} ${activeKey === 'devARContentGroup' ? 'is-light-sheet' : ''}`} style={{ backgroundColor: sheetColor, color: sheetInk, visibility: closingCover?.closed || (entry && !entry.revealing) ? 'hidden' : undefined }} role="region" aria-label={selected ? t.groups[selected.groupKey] : showingDirectory ? 'All project groups' : 'Portfolio introduction'} aria-labelledby={selected ? `project-tab-${selected.groupKey}` : undefined}>
-            {showingDirectory ? <section className={`archive-group-directory ${directoryGroup ? 'is-single-group' : ''}`} data-directory-group={directoryGroup?.id ?? 'all'} aria-label={lang === 'ko' ? '전체 프로젝트 그룹' : 'All project groups'}><span className="archive-kicker">{directoryGroup ? 'PROJECT GROUP' : 'ALL PROJECTS'} / {directoryRows.reduce((total, item) => total + item.keys.length, 0)} FILES</span><h2>{directoryGroup ? tabNames[activeKey!] : lang === 'ko' ? '전체 프로젝트' : 'All projects'}</h2><div>{directoryRows.map(item => <section key={item.id}><h3 style={{ color: item.color }}>{item.caption}</h3><ul>{item.keys.map(key => <li key={key}><button onClick={() => { const target = fileSelection(key); chooseProject(target.row, target.key); }}>{tabNames[key]}<span>↗</span></button></li>)}</ul></section>)}</div></section> : selected ? <FileProjectExperience key={selected.groupKey} group={selected} /> : <>
+            {showingDirectory ? <section className={`archive-group-directory ${directoryGroup ? 'is-single-group' : ''}`} data-directory-group={directoryGroup?.id ?? 'all'} aria-label={lang === 'ko' ? '전체 프로젝트 그룹' : 'All project groups'}><span className="archive-kicker">{directoryGroup ? 'PROJECT GROUP' : 'ALL PROJECTS'} / {directoryRows.reduce((total, item) => total + item.keys.length, 0)} FILES</span><h2>{directoryGroup ? tabNames[activeKey!] : lang === 'ko' ? '전체 프로젝트' : 'All projects'}</h2><div>{directoryRows.map(item => <section key={item.id}><h3 style={{ color: item.color }}>{item.caption}</h3><ul>{item.keys.map(key => <li key={key}><button onClick={() => { const target = fileSelection(key); chooseProject(target.row, target.key); }}>{tabNames[key]}<span>↗</span></button></li>)}</ul></section>)}</div><FileVideoGallery videos={directoryVideos} /></section> : selected ? <FileProjectExperience key={selected.groupKey} group={selected} /> : <>
               <div className="mosby-intro"><p>{lang === 'ko' ? <>아이디어를 설계하고, 직접 만들고, 경험으로 완성합니다.<br />앱과 웹 서비스부터 3D 공간, 캐릭터, 인터랙티브 콘텐츠까지.<br />디자인과 개발 사이에서 쌓아온 정연수의 작업 기록입니다.<br />각 프로젝트의 탭을 눌러 파일을 펼쳐보세요.</> : <>Ideas shaped through design, code, and curiosity.<br />From independent apps and web services to 3D spaces,<br />characters, and interactive experiences. A collection<br />of projects by Jeong Yeon Su. Open a tab to explore.</>}</p></div>
               <div className="mosby-project-body"><div className="mosby-colophon"><span>JEONG YEON SU</span><p>Design, development & everything in between.</p><a href="mailto:yeonsu826@gmail.com">yeonsu826@gmail.com ↗</a></div>
                 <div className="archive-photo-mount"><figure className="archive-working-photo">

@@ -1076,6 +1076,11 @@
   visibility: hidden;
 }
 
+.mosby-active-group.is-opening-cover .archive-film-section,
+.mosby-active-group.is-closing-cover .archive-film-section {
+  visibility: hidden;
+}
+
 .mosby-cover-back {
   inset: 0;
 }

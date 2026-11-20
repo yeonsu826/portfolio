@@ -5,6 +5,8 @@ import { type PortfolioGroup } from '../../data/portfolio';
 import { useLang } from '../../context/LangContext';
 import { Readme } from '../Readme';
 import { projectDescriptions } from './projectDescriptions';
+import { VIMEO_VIDEOS } from '../../data/videos';
+import FileVideoGallery from './FileVideoGallery';
 import './FileProjectExperience.css';
 
 function projectImages(group: PortfolioGroup) {
@@ -200,6 +202,7 @@ export default function FileProjectExperience({ group }: { group: PortfolioGroup
     <section className="archive-pinboard-section" aria-labelledby={`pinboard-${group.groupKey}`}><header><div><span className="archive-kicker">VISUAL RESEARCH / CONTACT SHEETS</span><h3 id={`pinboard-${group.groupKey}`}>{lang === 'ko' ? '프로젝트 설명' : 'Project description'}</h3></div><p>{lang === 'ko' ? <>이미지를 드래그해 자유롭게 펼쳐보세요.<br />클릭하면 크게 볼 수 있습니다.</> : <>Drag the images to rearrange.<br />Click any image to look closer.</>}</p></header>
       <div className="archive-pinboard" style={{ height: boardHeight }}><div ref={descriptionPaper} className={`archive-board-paper ${description ? 'is-detailed' : ''}`} aria-hidden={description ? undefined : true}><span>{title}</span>{(description ?? [t.groupDescriptions[group.groupKey]]).map((paragraph, index) => <p key={index}>{paragraph}</p>)}<small>COLLECTED MATERIAL / JEONG YEON SU</small></div>{images.map((src, index) => <DraggablePhoto key={src} src={src} index={index} title={title} boardHeight={boardHeight} onOpen={origin => setViewer({ index, origin })} />)}</div>
     </section>
+    <FileVideoGallery videos={VIMEO_VIDEOS.filter(video => video.groupKey === group.groupKey)} external={group.items.filter(item => item.linkLabel === 'video' && item.link).map(item => ({ url: item.link!, label: `${title} — ${lang === 'ko' ? '프로젝트 영상' : 'Project video'}` }))} />
     {videos.length > 0 && <section className="archive-project-videos" aria-label={lang === 'ko' ? '프로젝트 영상' : 'Project videos'}>{videos.map(video => <figure key={video.src}><video controls playsInline preload="none" aria-label={video.label}><source src={video.src} type="video/mp4" /></video><figcaption>{video.label}</figcaption></figure>)}</section>}
     {viewer !== null && <ImageViewer images={images} startIndex={viewer.index} origin={viewer.origin} title={title} onClose={() => setViewer(null)} />}
   </article>;
