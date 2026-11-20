@@ -6,18 +6,17 @@
   border: 0;
 }
 
-
 .mosby-portfolio {
   --archive-background: #181917;
-  --row-height: clamp(36px,3.78vw,58px);
-  --tab-height: calc(var(--row-height) * .76);
+  --row-height: clamp(36px, 3.78vw, 58px);
+  --tab-height: calc(var(--row-height) * 0.76);
   position: relative;
   isolation: isolate;
   background: #d6d2ca;
   color: #f8f1e4;
   min-height: 100dvh;
-  padding: clamp(18px,3vw,42px) 5.5% 0;
-  font-family: 'Noto Sans KR',sans-serif;
+  padding: clamp(18px, 3vw, 42px) 5.5% 0;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .mosby-portfolio * {
@@ -31,7 +30,7 @@
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
 }
@@ -58,10 +57,10 @@
 }
 
 .archive-backdrop:after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(125deg,#0009,transparent 58%,#0002);
+  background: linear-gradient(125deg, #0009, transparent 58%, #0002);
 }
 
 .archive-frame {
@@ -186,7 +185,7 @@
 .archive-fan-file .mosby-tab {
   width: var(--tab-width);
   flex: 0 0 var(--tab-width);
-  font-size: var(--deck-tab-font-fit,var(--deck-tab-font));
+  font-size: var(--deck-tab-font-fit, var(--deck-tab-font));
   padding: 0 5px;
 }
 
@@ -211,12 +210,12 @@
   left: 34px;
   top: 50%;
   width: calc(var(--deck-file-height) - var(--row-height) - 44px);
-  transform: translate(-50%,-50%) rotate(-90deg);
-  font-family: 'Noto Sans KR',sans-serif;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 28px;
   font-weight: 600;
   line-height: 1.3;
-  letter-spacing: -.03em;
+  letter-spacing: -0.03em;
   text-align: left;
   white-space: nowrap;
 }
@@ -226,12 +225,12 @@
   left: 110px;
   top: 50%;
   width: calc(var(--deck-file-height) - var(--row-height) - 44px);
-  transform: translate(-50%,-50%) rotate(-90deg);
-  font-family: 'Noto Sans KR',sans-serif;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-weight: 400;
   line-height: 1.85;
-  letter-spacing: -.015em;
+  letter-spacing: -0.015em;
   text-align: left;
   word-break: keep-all;
   color: #f8f1e4d9;
@@ -242,15 +241,17 @@
   left: 345px;
   top: 50%;
   width: calc(var(--deck-file-height) - var(--row-height));
-  transform: translate(-50%,-50%) rotate(-90deg);
+  transform: translate(-50%, -50%) rotate(-90deg);
 }
 
 .archive-fan-preview {
   display: block;
-  width: min(320px,calc(100% - 68px));
+  width: min(320px, calc(100% - 68px));
   margin: 0 auto;
   padding: 5px;
-  transform: translateX(var(--preview-shift,-18px)) rotate(var(--preview-angle)) scale(var(--preview-scale,1)) scale(var(--preview-fit,1));
+  transform: translateX(var(--preview-shift, -18px))
+    rotate(var(--preview-angle)) scale(var(--preview-scale, 1))
+    scale(var(--preview-fit, 1));
   background: #fffdf5;
   box-shadow: 2px 5px 12px #0003;
 }
@@ -270,7 +271,7 @@
   width: 76px;
   height: 26px;
   transform: rotate(180deg);
-  filter: drop-shadow(.5px 1px .6px #0003);
+  filter: drop-shadow(0.5px 1px 0.6px #0003);
 }
 
 .archive-fan-preview-mount.is-photo-stack {
@@ -346,7 +347,7 @@
   height: 100%;
 }
 
-@media (max-width:600px) {
+@media (max-width: 600px) {
   .archive-fan {
     width: 100%;
   }
@@ -365,46 +366,76 @@
 .archive-masthead-category {
   color: #b4b0a6;
   font-size: 7px;
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
 }
 
 .archive-wordmark {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Noto Sans KR',sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.archive-contact-link {
+.mosby-portfolio .archive-contact-link {
+  position: relative;
   margin-left: auto;
-  font-family: 'Noto Sans KR',sans-serif;
-  font-size: 10px;
-  font-style: italic;
+  padding: 8px 15px;
+  background: #f4ecd9;
+  color: #000;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  transform: rotate(-4deg);
+  box-shadow: 1px 3px 5px #0004;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.archive-contact-link:before {
+  content: "";
+  position: absolute;
+  left: 29%;
+  top: -6px;
+  width: 40%;
+  height: 11px;
+  background: #d8c99b99;
+  transform: rotate(3deg);
+  pointer-events: none;
+}
+.archive-contact-link:hover,
+.archive-contact-link[aria-expanded="true"] {
+  transform: rotate(0deg) translateY(-1px);
+  box-shadow: 1px 4px 7px #0004;
+}
+.archive-contact-link:focus-visible {
+  outline: 2px solid #f1d393;
+  outline-offset: 4px;
 }
 
 .archive-heading {
-  padding: clamp(56px,6.3vw,100px) 4% clamp(68px,7vw,108px);
+  padding: clamp(56px, 6.3vw, 100px) 4% clamp(68px, 7vw, 108px);
   text-align: center;
 }
 
 .archive-heading h1 {
   margin: 0;
   color: #f7f4ef;
-  font-family: 'Noto Sans KR',sans-serif;
-  font-size: clamp(30px,5vw,80px);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(30px, 5vw, 80px);
   font-weight: 800;
-  line-height: .92;
-  letter-spacing: -.035em;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
 }
 
 .archive-heading p {
   margin: 20px auto 0;
   color: #aaa69b;
-  font-family: 'Noto Sans KR',sans-serif;
-  font-size: clamp(9px,.86vw,13px);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(9px, 0.86vw, 13px);
   line-height: 1.65;
   word-break: keep-all;
 }
@@ -426,7 +457,7 @@
 }
 
 .mosby-row:before {
-  content: '';
+  content: "";
   position: absolute;
   top: calc(var(--tab-height) - 1px);
   left: 0;
@@ -437,7 +468,7 @@
 }
 
 .archive-group-directory {
-  padding: clamp(22px,4vw,50px);
+  padding: clamp(22px, 4vw, 50px);
   background: #f6f3ed;
   color: #25241f;
 }
@@ -447,23 +478,23 @@
   border: 0;
   padding: 0;
   background: transparent;
-  color: var(--row-ink,#f8f1e4);
+  color: var(--row-ink, #f8f1e4);
   cursor: pointer;
 }
 
 .archive-group-directory h2 {
-  font-size: clamp(28px,3vw,44px);
+  font-size: clamp(28px, 3vw, 44px);
   margin: 14px 0 32px;
 }
 
 .archive-group-directory > div {
   display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
 }
 
 .archive-group-directory.is-single-group > div {
-  grid-template-columns: minmax(0,1fr);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .archive-group-directory h3 {
@@ -493,7 +524,7 @@
   cursor: pointer;
 }
 
-@media (max-width:700px) {
+@media (max-width: 700px) {
   .archive-group-directory > div {
     grid-template-columns: 1fr;
   }
@@ -512,15 +543,15 @@
   isolation: isolate;
   height: var(--tab-height);
   width: 24%;
-  flex: 0 0 var(--tab-width,24%);
+  flex: 0 0 var(--tab-width, 24%);
   min-width: 0;
   padding: 0 15px;
   border: 0;
   background: none;
   color: var(--tab-ink);
   cursor: pointer;
-  font-family: 'Noto Sans KR',sans-serif;
-  font-size: clamp(13px,1.62vw,25px);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(8px, 2.1cqw, 25px);
   font-weight: 400;
   line-height: 1.1;
   white-space: nowrap;
@@ -542,7 +573,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   padding-top: 3px;
-  transition: transform .18s;
+  transition: transform 0.18s;
+}
+
+.mosby-tabs:has(> :nth-child(9)) .mosby-tab {
+  padding-inline: 2px;
+  font-size: clamp(8px, 0.95vw, 14px);
 }
 
 .mosby-tab:hover span {
@@ -558,40 +594,42 @@
 .mosby-row-caption {
   position: absolute;
   right: 3.8%;
-  top: calc(var(--tab-height) + (var(--row-height) - var(--tab-height)) * .5);
+  top: calc(var(--tab-height) + (var(--row-height) - var(--tab-height)) * 0.5);
   transform: translateY(-50%);
-  font-size: clamp(6px,.7vw,11px);
+  font-size: clamp(6px, 0.7vw, 11px);
   line-height: 1;
   pointer-events: none;
   white-space: nowrap;
-  letter-spacing: -.025em;
+  letter-spacing: -0.025em;
 }
 
 .mosby-paper {
   position: relative;
   background: var(--paper-color);
-  min-height: calc(100dvh - 16.77vh - 4 * var(--row-height));
-  padding: calc(var(--row-height) * .9) 6.2% 24px;
+  min-height: calc(
+    100dvh - 16.77vh - var(--file-group-count, 4) * var(--row-height)
+  );
+  padding: calc(var(--row-height) * 0.9) 6.2% 24px;
 }
 
 .mosby-intro {
   max-width: 440px;
-  min-height: calc(56dvh - 4 * var(--row-height));
-  animation: file-appear .3s ease-out;
+  min-height: calc(56dvh - var(--file-group-count, 4) * var(--row-height));
+  animation: file-appear 0.3s ease-out;
 }
 
 .mosby-intro p {
-  font-size: clamp(8px,.78vw,12px);
+  font-size: clamp(8px, 0.78vw, 12px);
   line-height: 1.4;
-  letter-spacing: -.035em;
+  letter-spacing: -0.035em;
   margin: 0;
   white-space: normal;
   word-break: keep-all;
 }
 
 .mosby-intro h2 {
-  font-family: 'Noto Sans KR',sans-serif;
-  font-size: clamp(23px,2.7vw,40px);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(23px, 2.7vw, 40px);
   font-weight: 400;
   line-height: 1.2;
   margin: 0 0 18px;
@@ -607,7 +645,8 @@
   font: inherit;
 }
 
-.mosby-portfolio a:focus-visible, .mosby-portfolio button:not(.mosby-tab):focus-visible {
+.mosby-portfolio a:focus-visible,
+.mosby-portfolio button:not(.mosby-tab):focus-visible {
   outline: 2px dashed #fff3ad;
   outline-offset: 5px;
 }
@@ -623,8 +662,8 @@
   line-height: 1.8;
 }
 
-.mosby-colophon>span {
-  font-family: 'Noto Sans KR',sans-serif;
+.mosby-colophon > span {
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 30px;
 }
 
@@ -646,7 +685,7 @@
 
 @keyframes file-appear {
   from {
-    opacity: .3;
+    opacity: 0.3;
     transform: translateY(5px);
   }
 
@@ -656,7 +695,7 @@
   }
 }
 
-@media (max-width:640px) {
+@media (max-width: 640px) {
   .mosby-portfolio {
     --row-height: 44px;
     --tab-height: 32px;
@@ -680,8 +719,8 @@
   .archive-heading h1 {
     max-width: 320px;
     margin: auto;
-    font-size: clamp(38px,9.5vw,60px);
-    line-height: .98;
+    font-size: clamp(38px, 9.5vw, 60px);
+    line-height: 0.98;
     text-wrap: balance;
   }
 
@@ -695,7 +734,7 @@
   }
 
   .mosby-tab {
-    font-size: 11px;
+    font-size: clamp(8px, 2.1cqw, 14px);
     padding: 0 5px;
   }
 
@@ -743,20 +782,19 @@
     font-size: 9px;
   }
 
-  .mosby-colophon>span {
+  .mosby-colophon > span {
     font-size: 25px;
   }
 }
 
-@media (prefers-reduced-motion:reduce) {
+@media (prefers-reduced-motion: reduce) {
   .mosby-portfolio * {
     animation: none !important;
     transition: none !important;
   }
 }
 
-@media (max-width:640px) {
-
+@media (max-width: 640px) {
   .mosby-row-caption {
     font-size: 4.5px;
   }
@@ -767,7 +805,7 @@
   flex-basis: var(--tab-width);
 }
 
-@media (max-width:640px) {
+@media (max-width: 640px) {
   .mosby-stack .mosby-row:nth-child(n) .mosby-tab {
     width: auto;
     flex: 1 1 0;
@@ -796,11 +834,11 @@
   transform-style: preserve-3d;
 }
 
-.mosby-file-sheet>.mosby-row {
+.mosby-file-sheet > .mosby-row {
   z-index: 2;
 }
 
-.mosby-file-sheet>.mosby-paper {
+.mosby-file-sheet > .mosby-paper {
   transform: none;
   backface-visibility: visible;
 }
@@ -810,7 +848,7 @@
   flex-basis: var(--tab-width);
 }
 
-@media (max-width:640px) {
+@media (max-width: 640px) {
   .mosby-file-sheet .mosby-row .mosby-tab {
     width: auto;
     flex: 1 1 0;
@@ -822,7 +860,7 @@
 }
 
 .mosby-row-caption {
-  color: var(--row-ink,#f8f1e4);
+  color: var(--row-ink, #f8f1e4);
 }
 
 .mosby-tab.is-selected-project {
@@ -833,11 +871,13 @@
   font-weight: 600;
 }
 
-.mosby-file-sheet .mosby-row.is-front-group .mosby-tab:not(.is-selected-project) {
+.mosby-file-sheet
+  .mosby-row.is-front-group
+  .mosby-tab:not(.is-selected-project) {
   z-index: 1;
 }
 
-.mosby-paper.is-light-sheet .archive-project-notes>div {
+.mosby-paper.is-light-sheet .archive-project-notes > div {
   background: #191a18;
   color: #f8f1e4;
   padding: 24px;
@@ -856,25 +896,6 @@
   perspective: 1800px;
 }
 
-.mosby-active-index {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 4;
-  pointer-events: none;
-}
-
-.mosby-active-index .mosby-row:before {
-  display: none;
-}
-
-.mosby-active-index .mosby-tab {
-  pointer-events: auto;
-}
-
-.mosby-active-index .mosby-row-caption {
-  color: var(--sheet-ink);
-}
-
 .mosby-tab-placeholder {
   display: block;
   width: var(--tab-width);
@@ -889,7 +910,7 @@
 }
 
 .mosby-project-tab-row:before {
-  content: '';
+  content: "";
   position: absolute;
   top: var(--tab-height);
   bottom: 0;
@@ -908,12 +929,7 @@
   transform-origin: 50% 0;
 }
 
-.mosby-active-index .mosby-row .mosby-tab {
-  width: var(--tab-width);
-  flex-basis: var(--tab-width);
-}
-
-@media (max-width:640px) {
+@media (max-width: 640px) {
   .mosby-active-group {
     --tab-width: calc(100% / var(--group-tab-count)) !important;
   }
@@ -922,15 +938,16 @@
     width: var(--tab-width);
     flex: 1 1 0;
   }
-
-  .mosby-active-index .mosby-row .mosby-tab {
-    width: var(--tab-width);
-    flex: 1 1 0;
-  }
 }
 
 .mosby-files {
   position: relative;
+}
+
+.mosby-files,
+.archive-deck-flight,
+.archive-return-file {
+  container-type: inline-size;
 }
 
 .mosby-flight-card {
@@ -954,7 +971,7 @@
   flex-basis: var(--tab-width);
 }
 
-.mosby-flight-card .mosby-tab>span {
+.mosby-flight-card .mosby-tab > span {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -965,7 +982,7 @@
   background: var(--flight-color);
 }
 
-@media (max-width:640px) {
+@media (max-width: 640px) {
   .mosby-flight-card .mosby-tab {
     width: auto;
     flex: 1 1 0;
@@ -987,7 +1004,7 @@
   width: var(--tab-width);
 }
 
-@media (max-width:640px) {
+@media (max-width: 640px) {
   .mosby-flight-card.is-project-flight {
     --tab-width: calc(100% / var(--flight-tab-count)) !important;
   }
@@ -1035,12 +1052,12 @@
 }
 
 .mosby-flight-cover:after {
-  content: '';
+  content: "";
   position: absolute;
   inset: var(--row-height) 0 0;
   pointer-events: none;
-  background: linear-gradient(180deg,#0002,transparent 20%,#fff1);
-  opacity: .6;
+  background: linear-gradient(180deg, #0002, transparent 20%, #fff1);
+  opacity: 0.6;
 }
 
 .mosby-flight-cover {
@@ -1061,18 +1078,22 @@
 
 .mosby-cover-front .mosby-flight-paper {
   box-shadow: 0 12px 22px #0003;
-  background: linear-gradient(180deg,#ffffff08,#0000000a),var(--flight-color);
+  background:
+    linear-gradient(180deg, #ffffff08, #0000000a), var(--flight-color);
 }
 
 .mosby-cover-back {
   position: absolute;
-  background: linear-gradient(180deg,#00000012,#ffffff0a),var(--flight-color);
+  background:
+    linear-gradient(180deg, #00000012, #ffffff0a), var(--flight-color);
   backface-visibility: hidden;
   transform: rotateX(180deg) translateZ(1px);
   box-shadow: 0 12px 24px #0003;
 }
 
-.mosby-active-group.is-opening-cover .archive-pinboard-section, .mosby-active-group.is-opening-cover .archive-project-notes, .mosby-active-group.is-opening-cover .archive-project-videos {
+.mosby-active-group.is-opening-cover .archive-pinboard-section,
+.mosby-active-group.is-opening-cover .archive-project-notes,
+.mosby-active-group.is-opening-cover .archive-project-videos {
   visibility: hidden;
 }
 
@@ -1129,12 +1150,17 @@
   pointer-events: none;
 }
 
-.mosby-closing-cover>.mosby-cover-front {
+.mosby-closing-cover > .mosby-cover-front {
   height: 100%;
 }
 
 .mosby-active-group.is-opening-cover .mosby-paper {
-  clip-path: polygon(0 0,100% 0,100% var(--cover-height),0 var(--cover-height));
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% var(--cover-height),
+    0 var(--cover-height)
+  );
 }
 
 .mosby-active-group.is-opening-cover .mosby-footer {
@@ -1148,59 +1174,37 @@
   border-radius: 0;
 }
 
-.mosby-row.is-extracting-group>.mosby-tabs, .mosby-row.is-extracting-group>.mosby-row-caption {
+.mosby-row.is-extracting-group > .mosby-tabs,
+.mosby-row.is-extracting-group > .mosby-row-caption {
   visibility: hidden;
 }
 
 .mosby-active-group.is-closing-cover .mosby-paper {
-  clip-path: polygon(0 0,100% 0,100% var(--cover-height),0 var(--cover-height));
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% var(--cover-height),
+    0 var(--cover-height)
+  );
 }
 
-.mosby-active-group.is-closing-cover .archive-pinboard-section, .mosby-active-group.is-closing-cover .archive-project-notes, .mosby-active-group.is-closing-cover .archive-project-videos, .mosby-active-group.is-closing-cover .mosby-footer {
+.mosby-active-group.is-closing-cover .archive-pinboard-section,
+.mosby-active-group.is-closing-cover .archive-project-notes,
+.mosby-active-group.is-closing-cover .archive-project-videos,
+.mosby-active-group.is-closing-cover .mosby-footer {
   visibility: hidden;
 }
 
-.mosby-active-group.is-awaiting-front>.mosby-active-index, .mosby-active-group.is-awaiting-front .mosby-project-tab-row {
+.mosby-active-group.is-awaiting-front .mosby-project-tab-row {
   visibility: hidden;
 }
 
-.mosby-stack>.mosby-row:before {
+.mosby-stack > .mosby-row:before {
   height: calc(2 * var(--row-height));
 }
 
-.mosby-stack>.mosby-row.is-front-group:before {
+.mosby-stack > .mosby-row.is-front-group:before {
   height: calc(var(--row-height) - var(--tab-height));
-}
-
-.mosby-retained-index {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.mosby-retained-index .mosby-tab {
-  width: var(--tab-width);
-  flex-basis: var(--tab-width);
-}
-
-.mosby-retained-index .mosby-tab>span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.mosby-retained-index .mosby-row:before {
-  height: calc(var(--row-height) - var(--tab-height));
-}
-
-@media (max-width:640px) {
-  .mosby-retained-index .mosby-tab {
-    width: auto;
-    flex: 1 1 0;
-  }
 }
 
 .mosby-stack {
@@ -1215,11 +1219,11 @@
 }
 
 .mosby-paper.is-introduction {
-  --portrait-size: clamp(140px,20vw,212px);
-  --portrait-inset: clamp(22px,3vw,38px);
+  --portrait-size: clamp(140px, 20vw, 212px);
+  --portrait-inset: clamp(22px, 3vw, 38px);
   display: flex;
   flex-direction: column;
-  min-height: clamp(340px,46dvh,520px);
+  min-height: clamp(340px, 46dvh, 520px);
   gap: 28px;
   padding: 32px 6.2% 20px;
 }
@@ -1269,7 +1273,7 @@
   width: 96px;
   height: 33px;
   transform: rotate(8deg);
-  filter: drop-shadow(.5px 1px .6px #0003);
+  filter: drop-shadow(0.5px 1px 0.6px #0003);
   pointer-events: none;
 }
 
@@ -1278,7 +1282,7 @@
 }
 
 .is-introduction .mosby-colophon > span {
-  font-size: clamp(24px,2.7vw,34px);
+  font-size: clamp(24px, 2.7vw, 34px);
 }
 
 .is-introduction .mosby-colophon p {
@@ -1290,7 +1294,7 @@
   padding-top: 14px;
 }
 
-@media (max-width:480px) {
+@media (max-width: 480px) {
   .mosby-paper.is-introduction {
     --portrait-size: 124px;
     --portrait-inset: 20px;

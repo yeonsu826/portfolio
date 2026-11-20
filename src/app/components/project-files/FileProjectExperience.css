@@ -10,7 +10,7 @@
 
 .archive-editorial {
   display: grid;
-  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 9%;
   padding: 5% 5.5% 4%;
   background: var(--archive-stock);
@@ -20,16 +20,18 @@
 }
 
 .archive-kicker {
-  font: 9px/1.5 'Noto Sans KR',sans-serif;
-  letter-spacing: .07em;
+  font:
+    9px/1.5 "Noto Sans KR",
+    sans-serif;
+  letter-spacing: 0.07em;
 }
 
 .archive-editorial h2 {
-  font-family: 'Noto Sans KR',sans-serif;
-  font-size: clamp(30px,3.8vw,60px);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(30px, 3.8vw, 60px);
   font-weight: 800;
   line-height: 1.04;
-  letter-spacing: -.055em;
+  letter-spacing: -0.055em;
   overflow-wrap: anywhere;
   margin: 13px 0 35px;
 }
@@ -55,7 +57,7 @@
   height: auto;
   max-height: 440px;
   object-fit: contain;
-  animation: archive-slide-in .45s ease-out;
+  animation: archive-slide-in 0.45s ease-out;
 }
 
 .archive-slide-controls {
@@ -63,7 +65,9 @@
   align-items: center;
   gap: 15px;
   padding: 12px 0 5px;
-  font: 10px/1.2 'Noto Sans KR',sans-serif;
+  font:
+    10px/1.2 "Noto Sans KR",
+    sans-serif;
 }
 
 .mosby-portfolio .archive-slide-controls button {
@@ -76,7 +80,7 @@
 }
 
 .archive-slide-controls button:disabled {
-  opacity: .3;
+  opacity: 0.3;
   cursor: default;
 }
 
@@ -85,7 +89,9 @@
 }
 
 .archive-image-credit {
-  font: 8px/1.6 'Noto Sans KR',sans-serif;
+  font:
+    8px/1.6 "Noto Sans KR",
+    sans-serif;
   color: #77756e;
   margin: 10px 0 0;
 }
@@ -96,8 +102,8 @@
 }
 
 .archive-project-lead {
-  font-family: 'Noto Sans KR',sans-serif;
-  font-size: clamp(14px,1.28vw,18px);
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: clamp(14px, 1.28vw, 18px);
   line-height: 1.95;
   word-break: keep-all;
   margin: 25px 0 30px;
@@ -108,7 +114,9 @@
   grid-template-columns: 55px 1fr;
   column-gap: 18px;
   row-gap: 14px;
-  font: 10px/1.9 'Noto Sans KR',sans-serif;
+  font:
+    10px/1.9 "Noto Sans KR",
+    sans-serif;
   margin: 0 0 30px;
 }
 
@@ -124,20 +132,26 @@
 .archive-editorial-link {
   display: block;
   width: fit-content;
-  font: 10px/1.6 'Noto Sans KR',sans-serif;
+  font:
+    10px/1.6 "Noto Sans KR",
+    sans-serif;
   border-bottom: 1px solid #25241f80;
   margin: 14px 0;
 }
 
 .archive-editorial-signature {
-  font: italic 27px/1.3 'Noto Sans KR',sans-serif;
+  font:
+    italic 27px/1.3 "Noto Sans KR",
+    sans-serif;
   text-align: right;
   margin: 55px 0 0;
 }
 
 .archive-editorial-signature span {
   display: block;
-  font: 8px/2 'Noto Sans KR',sans-serif;
+  font:
+    8px/2 "Noto Sans KR",
+    sans-serif;
   color: #8b867c;
   margin-top: 7px;
 }
@@ -146,20 +160,22 @@
   margin-top: 25px;
   padding: 18px 0;
   border-top: 1px solid #ffffff55;
-  font: 12px/1.8 'Noto Sans KR',sans-serif;
+  font:
+    12px/1.8 "Noto Sans KR",
+    sans-serif;
 }
 
 .archive-project-notes summary {
   cursor: pointer;
 }
 
-.archive-project-notes>div {
+.archive-project-notes > div {
   display: grid;
   gap: 20px;
   padding: 25px 0;
 }
 
-.archive-pinboard-section>header {
+.archive-pinboard-section > header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -168,18 +184,22 @@
 }
 
 .archive-pinboard-section h3 {
-  font: 400 clamp(25px,2.8vw,42px)/1.3 'Noto Sans KR',sans-serif;
-  letter-spacing: -.04em;
+  font:
+    400 clamp(25px, 2.8vw, 42px)/1.3 "Noto Sans KR",
+    sans-serif;
+  letter-spacing: -0.04em;
   margin: 12px 0 0;
 }
 
-.archive-pinboard-section>header p {
-  font: 9px/1.8 'Noto Sans KR',sans-serif;
+.archive-pinboard-section > header p {
+  font:
+    9px/1.8 "Noto Sans KR",
+    sans-serif;
   margin: 0;
 }
 
 .archive-pinboard {
-  --card-width: clamp(240px,44%,480px);
+  --card-width: clamp(240px, 44%, 480px);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -189,7 +209,10 @@
 
 .mosby-portfolio .archive-photo {
   position: absolute;
-  left: calc(var(--photo-inset-x,6px) + var(--photo-x) * (100% - var(--photo-width) - 2 * var(--photo-inset-x,6px)));
+  left: calc(
+    var(--photo-inset-x, 6px) + var(--photo-x) *
+      (100% - var(--photo-width) - 2 * var(--photo-inset-x, 6px))
+  );
   top: var(--photo-y);
   width: var(--photo-width);
   padding: 0;
@@ -202,7 +225,7 @@
   user-select: none;
   cursor: grab;
   text-align: left;
-  transition: box-shadow .15s;
+  transition: box-shadow 0.15s;
 }
 
 .archive-photo img {
@@ -214,11 +237,13 @@
   background: transparent;
 }
 
-.archive-photo>span {
+.archive-photo > span {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font: 8px/1.5 'Noto Sans KR',sans-serif;
+  font:
+    8px/1.5 "Noto Sans KR",
+    sans-serif;
   margin-top: 9px;
   overflow-wrap: anywhere;
 }
@@ -243,17 +268,21 @@
   box-shadow: 2px 4px 10px #0002;
 }
 
-.archive-board-paper>span {
-  font: 700 30px/1.2 'Noto Sans KR',sans-serif;
+.archive-board-paper > span {
+  font:
+    700 30px/1.2 "Noto Sans KR",
+    sans-serif;
 }
 
 .archive-board-paper p {
-  font: 10px/1.8 'Noto Sans KR',sans-serif;
+  font:
+    10px/1.8 "Noto Sans KR",
+    sans-serif;
 }
 
 .archive-project-videos {
   display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 25px;
   margin-top: 30px;
 }
@@ -303,7 +332,7 @@
   pointer-events: none;
 }
 
-.archive-image-viewer figure>img {
+.archive-image-viewer figure > img {
   pointer-events: auto;
   display: block;
   max-width: calc(100% - 175px);
@@ -320,18 +349,22 @@
   color: #fff9eb;
   padding: 20px 15px;
   transform: rotate(-3deg);
-  font: 11px/1.6 'Noto Sans KR',sans-serif;
+  font:
+    11px/1.6 "Noto Sans KR",
+    sans-serif;
 }
 
-.archive-image-viewer figcaption>span {
+.archive-image-viewer figcaption > span {
   display: block;
   margin-bottom: 15px;
 }
 
 .archive-image-viewer figcaption small {
   display: block;
-  font: 8px/1.6 'Noto Sans KR',sans-serif;
-  opacity: .65;
+  font:
+    8px/1.6 "Noto Sans KR",
+    sans-serif;
+  opacity: 0.65;
   margin-top: 35px;
 }
 
@@ -360,7 +393,9 @@
   align-items: center;
   gap: 25px;
   margin: 25px auto 0;
-  font: 9px/1.5 'Noto Sans KR',sans-serif;
+  font:
+    9px/1.5 "Noto Sans KR",
+    sans-serif;
   width: fit-content;
 }
 
@@ -376,7 +411,7 @@
 
 @keyframes archive-slide-in {
   from {
-    opacity: .15;
+    opacity: 0.15;
   }
 
   to {
@@ -384,7 +419,7 @@
   }
 }
 
-@media (max-width:700px) {
+@media (max-width: 700px) {
   .mosby-paper:has(.project-experience) {
     padding: 40px 3.5% 20px;
   }
@@ -422,7 +457,7 @@
     margin-top: 45px;
   }
 
-  .archive-pinboard-section>header {
+  .archive-pinboard-section > header {
     align-items: flex-start;
     flex-direction: column;
     gap: 15px;
@@ -436,7 +471,7 @@
     height: auto;
   }
 
-  .archive-photo>span {
+  .archive-photo > span {
     font-size: 7px;
   }
 
@@ -446,7 +481,7 @@
     padding: 25px;
   }
 
-  .archive-board-paper>span {
+  .archive-board-paper > span {
     font-size: 22px;
   }
 
@@ -460,7 +495,7 @@
     gap: 20px;
   }
 
-  .archive-image-viewer figure>img {
+  .archive-image-viewer figure > img {
     max-width: 100%;
     max-height: 65dvh;
     border: 0;
@@ -474,7 +509,7 @@
     padding: 14px;
   }
 
-  .archive-image-viewer figcaption>span {
+  .archive-image-viewer figcaption > span {
     margin-bottom: 7px;
   }
 
@@ -497,7 +532,7 @@
   }
 }
 
-@media (prefers-reduced-motion:reduce) {
+@media (prefers-reduced-motion: reduce) {
   .project-experience * {
     animation: none !important;
     transition: none !important;
@@ -523,7 +558,9 @@
   display: block;
   max-width: 200px;
   margin-top: 24px;
-  font: 8px/1.6 'Noto Sans KR',sans-serif;
+  font:
+    8px/1.6 "Noto Sans KR",
+    sans-serif;
 }
 
 .archive-board-paper.is-detailed {
@@ -537,7 +574,7 @@
   line-height: 1.95;
 }
 
-@media (max-width:700px) {
+@media (max-width: 700px) {
   .archive-board-paper {
     left: 2%;
     top: 25px;
@@ -552,24 +589,28 @@
   }
 }
 
-.archive-image-viewer figure>img {
+.archive-image-viewer figure > img {
   transform-origin: center;
-  will-change: transform,opacity;
+  will-change: transform, opacity;
 }
 
 .archive-image-viewer[open]::backdrop {
-  animation: archive-backdrop-in .46s ease-out both;
+  animation: archive-backdrop-in 0.46s ease-out both;
 }
 
-.archive-image-viewer figcaption,.archive-viewer-navigation,.archive-viewer-close {
-  transition: opacity .2s ease;
+.archive-image-viewer figcaption,
+.archive-viewer-navigation,
+.archive-viewer-close {
+  transition: opacity 0.2s ease;
 }
 
 .archive-image-viewer.is-closing::backdrop {
-  animation: archive-backdrop-out .34s ease-in both;
+  animation: archive-backdrop-out 0.34s ease-in both;
 }
 
-.archive-image-viewer.is-closing figcaption,.archive-image-viewer.is-closing .archive-viewer-navigation,.archive-image-viewer.is-closing .archive-viewer-close {
+.archive-image-viewer.is-closing figcaption,
+.archive-image-viewer.is-closing .archive-viewer-navigation,
+.archive-image-viewer.is-closing .archive-viewer-close {
   opacity: 0;
   pointer-events: none;
 }
@@ -594,7 +635,7 @@
   }
 }
 
-@media (prefers-reduced-motion:reduce) {
+@media (prefers-reduced-motion: reduce) {
   .archive-image-viewer[open]::backdrop {
     animation: none !important;
   }
@@ -605,20 +646,20 @@
 }
 
 .archive-image-viewer.is-closing::backdrop {
-  animation-duration: .65s;
+  animation-duration: 0.65s;
 }
 
 .archive-pinboard-section {
   margin-top: 36px;
 }
 
-.archive-pinboard-section>header {
+.archive-pinboard-section > header {
   padding-bottom: 24px;
 }
 
-@media (min-width:701px) {
+@media (min-width: 701px) {
   .archive-slide-image img {
-    max-height: min(30vh,260px);
+    max-height: min(30vh, 260px);
   }
 
   .archive-editorial h2 {

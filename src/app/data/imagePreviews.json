@@ -1,0 +1,137 @@
+{
+  "credentials/degree_certificate.png": {
+    "src": "images/previews/27e9aacb06e5db86.webp",
+    "width": 960,
+    "height": 726
+  },
+  "credentials/engineer.png": {
+    "src": "images/previews/959f661dd21b7c90.webp",
+    "width": 611,
+    "height": 863
+  },
+  "credentials/network.png": {
+    "src": "images/previews/31bc1f86dc8a6cf7.webp",
+    "width": 609,
+    "height": 861
+  },
+  "credentials/facebook_marketing.jpeg": {
+    "src": "images/previews/0590226b20bf37e8.webp",
+    "width": 748,
+    "height": 538
+  },
+  "credentials/MicrosoftAI.png": {
+    "src": "images/previews/38a2d5b68168d5ce.webp",
+    "width": 953,
+    "height": 670
+  },
+  "credentials/sessac.png": {
+    "src": "images/previews/915e99cee08c6203.webp",
+    "width": 615,
+    "height": 874
+  },
+  "credentials/vr_content_certificate.jpg": {
+    "src": "images/previews/b3c8e8c24ec69cc3.webp",
+    "width": 682,
+    "height": 960
+  },
+  "coverletter/졸업사진.webp": {
+    "src": "images/previews/284170dd7d2fe521.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/금산_2.webp": {
+    "src": "images/previews/5e07dc6b3af6c1d0.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/버추얼2기_1.jpg": {
+    "src": "images/previews/8149b13b0ac9e8e3.webp",
+    "width": 480,
+    "height": 318
+  },
+  "coverletter/행사_1.jpg": {
+    "src": "images/previews/85eee29ae5d372d5.webp",
+    "width": 480,
+    "height": 360
+  },
+  "coverletter/금산_5.jpg": {
+    "src": "images/previews/dfcbac29a788625d.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/태안_3.webp": {
+    "src": "images/previews/f795fa8d0155ccc7.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/태안_7.jpg": {
+    "src": "images/previews/a880c949f6572f53.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/태안_4.webp": {
+    "src": "images/previews/8d447f29a6be8f61.webp",
+    "width": 359,
+    "height": 480
+  },
+  "coverletter/금산_6.webp": {
+    "src": "images/previews/fdd2edef8245ae46.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/행사_3.jpg": {
+    "src": "images/previews/008f8e312056b97b.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/태안_5.webp": {
+    "src": "images/previews/9d9437e38d214f63.webp",
+    "width": 360,
+    "height": 480
+  },
+  "coverletter/금산_7.jpg": {
+    "src": "images/previews/06a76fea1f740bdc.webp",
+    "width": 480,
+    "height": 360
+  },
+  "coverletter/버추얼2기_2.JPG": {
+    "src": "images/previews/d27c5c451bbf2fe1.webp",
+    "width": 320,
+    "height": 480
+  },
+  "coverletter/행사_4.jpg": {
+    "src": "images/previews/19bae1785cd893b7.webp",
+    "width": 360,
+    "height": 480
+  },
+  "images/working.png": {
+    "src": "images/previews/93af9f4151455b43.webp",
+    "width": 640,
+    "height": 640
+  },
+  "images/cafe/0.jpeg": {
+    "src": "images/previews/d4621d53eee4d2b7.webp",
+    "width": 1440,
+    "height": 810
+  },
+  "images/dev/InteractiveRacing/1.png": {
+    "src": "images/previews/f6e0b090d7fd98ef.webp",
+    "width": 640,
+    "height": 360
+  },
+  "jinu/14.png": {
+    "src": "images/previews/7e6a6ad8ef54a2e6.webp",
+    "width": 640,
+    "height": 360
+  },
+  "images/dev/gracesea/project-thumbnail.jpg": {
+    "src": "images/previews/7494a9f2666333a3.webp",
+    "width": 640,
+    "height": 427
+  },
+  "images/gamingroom/1.jpeg": {
+    "src": "images/previews/1ec824436019f665.webp",
+    "width": 640,
+    "height": 360
+  }
+}
