@@ -13,7 +13,7 @@ export const activities = [
   certificate("facebook_marketing.jpeg", "Facebook Marketing"),
   certificate("MicrosoftAI.png", "Microsoft AI"),
   certificate("sessac.png", "SeSAC"),
-  certificate("vr_content_certificate.jpg", "VR 콘텐츠 제작"),
+  certificate("vr_content_certificate.jpg", "버추얼 콘텐츠 제작과정"),
 ];
 export const memoryPhotos: AboutImageAsset[] = [
   "졸업사진.webp",

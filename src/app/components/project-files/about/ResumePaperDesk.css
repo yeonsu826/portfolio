@@ -73,10 +73,6 @@
   padding-top: 20px;
   border-top: 1px solid #25241f55;
 }
-.resume-full-link {
-  font-size: 11px;
-  border-bottom: 1px solid currentColor;
-}
 .resume-education-paper {
   grid-column: 1;
   grid-row: 1;
@@ -162,7 +158,7 @@
 }
 .archive-contact-stack-hint {
   position: fixed;
-  bottom: 67px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 61;

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Link } from "react-router-dom";
 import { Github, Linkedin } from "lucide-react";
 import { resumeContent as resume } from "../../../data/resume";
 import portrait from "../../../../assets/resume/portrait.jpg";
@@ -71,9 +70,6 @@ export default function ResumePaperDesk() {
           </div>
         </div>
         <p className="resume-introduction">{resume.intro}</p>
-        <Link className="resume-full-link" to="/resume/unity">
-          이력서 전체 보기 ↗
-        </Link>
       </motion.article>
       <motion.article
         className="resume-paper resume-education-paper"
