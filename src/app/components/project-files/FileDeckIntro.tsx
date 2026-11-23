@@ -8,6 +8,7 @@ import {
 } from "react";
 import { motion, useAnimationControls } from "motion/react";
 import { previewSrc } from "../../utils/imagePreview";
+import { useTransitionScrollLock } from "../../utils/useTransitionScrollLock";
 import {
   fileRows,
   fileSelection,
@@ -143,6 +144,11 @@ export function FileDeckIntro({
     sideTravel: number;
   } | null>(null);
   const [phase, setPhase] = useState<"idle" | "extract" | "collect">("idle");
+  useTransitionScrollLock(
+    !!choice ||
+      arrival !== "done" ||
+      (parking !== "none" && parking !== "parked"),
+  );
   const collectionComplete = useRef({
     outer: false,
     inner: false,
@@ -745,14 +751,15 @@ export function FileDeckIntro({
       </div>
       {parking === "parked" && (
         <>
-          <p className="archive-contact-stack-hint">
-            프로젝트 파일 다시 펼치기
-          </p>
           <button
             className="archive-contact-stack-button"
             aria-label="프로젝트 파일 다시 펼치기"
             onClick={onResume}
-          />
+          >
+            <span className="archive-contact-stack-hint">
+              프로젝트 파일 다시 펼치기
+            </span>
+          </button>
         </>
       )}
     </section>

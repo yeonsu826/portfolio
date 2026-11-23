@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <filter id="paper" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="3" seed="8" stitchTiles="stitch" result="grain"/>
+    <feTurbulence type="fractalNoise" baseFrequency=".025 .19" numOctaves="2" seed="13" stitchTiles="stitch" result="fibers"/>
+    <feBlend in="grain" in2="fibers" mode="soft-light"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues=".58 1"/>
+      <feFuncG type="table" tableValues=".58 1"/>
+      <feFuncB type="table" tableValues=".58 1"/>
+    </feComponentTransfer>
+  </filter>
+  <rect width="320" height="320" fill="#fff" filter="url(#paper)"/>
+</svg>

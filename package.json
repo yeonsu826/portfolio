@@ -11,7 +11,7 @@
     "deploy": "gh-pages -d dist",
     "optimize:images": "node scripts/optimize-images.mjs",
     "format:files": "prettier --write \"src/app/components/project-files/**/*.{ts,tsx,css,svg}\" src/app/utils/imagePreview.ts src/main.tsx scripts/optimize-images.mjs",
-    "check:files": "node --test tests/files-portfolio.test.mjs"
+    "check:files": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "1.1.6",

@@ -16,6 +16,7 @@ import {
 import { LangProvider, useLang } from "../../context/LangContext";
 import { PORTFOLIO } from "../../data/portfolio";
 import { smoothScrollToElement } from "../../utils/smoothScrollToElement";
+import { useTransitionScrollLock } from "../../utils/useTransitionScrollLock";
 import FileProjectExperience from "./FileProjectExperience";
 import FileVideoGallery from "./FileVideoGallery";
 import { VIMEO_VIDEOS } from "../../data/videos";
@@ -421,6 +422,16 @@ function FileArchive() {
     !!homeCover ||
     !!returnDeck ||
     (!!entry && !entry.revealing);
+  useTransitionScrollLock(
+    !!entry ||
+      !!flight ||
+      !!closingCover ||
+      !!pageTurn ||
+      !!returningTab ||
+      !!homeCover ||
+      !!returnDeck ||
+      riseFromBelow,
+  );
   function enterGroup(selection: DeckSelection) {
     if (busy.current) return;
     busy.current = true;
@@ -725,6 +736,7 @@ function FileArchive() {
         key={item.id}
         layout={transferring ? false : "position"}
         data-group-id={item.id}
+        data-restoring-index={returningTab?.row === item.id || undefined}
         initial={entry && !isActive ? { y: 0, opacity: 0 } : false}
         animate={{
           y: 0,

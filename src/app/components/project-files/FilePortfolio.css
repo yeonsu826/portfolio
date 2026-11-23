@@ -538,6 +538,11 @@
   width: 100%;
 }
 
+/* Keep the rising tab behind its sheet until it crosses the sheet's top edge. */
+.mosby-stack > .mosby-row[data-restoring-index] > .mosby-tabs {
+  clip-path: inset(-10px -10px 0);
+}
+
 .mosby-tab {
   position: relative;
   isolation: isolate;
